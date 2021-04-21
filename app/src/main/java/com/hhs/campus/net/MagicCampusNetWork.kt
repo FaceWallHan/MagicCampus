@@ -1,5 +1,7 @@
-package com.hhs.campus
+package com.hhs.campus.net
 
+import com.hhs.campus.Login
+import com.hhs.campus.StudentService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -8,7 +10,8 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 object MagicCampusNetWork {
-    private val studentService=ServiceCreator.create<StudentService>()
+    private val studentService=
+        ServiceCreator.create<StudentService>()
 //    //挂起函数
     suspend fun loginStudent( login: Login)= studentService.login(login).await()
 

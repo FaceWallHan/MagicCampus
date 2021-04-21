@@ -14,7 +14,7 @@ class StudentViewModel:ViewModel() {
     }
     //
     private val saveLiveData=MutableLiveData<Student>()
-    val studentLocalLiveData=Transformations.switchMap(saveLiveData){query->
+    val saveLocalLiveData=Transformations.switchMap(saveLiveData){query->
         Repository.saveStudent(query)
     }
     fun  saveStudent(student: Student){
@@ -25,7 +25,15 @@ class StudentViewModel:ViewModel() {
     val statusLiveData=Transformations.switchMap(existLiveData){
         Repository.isStudentSaved()
     }
-    fun  refreshSelf(){
+    fun  refreshSelfExit(){
         existLiveData.value=existLiveData.value
+    }
+    //
+    private val inquireLiveData=MutableLiveData<Student>()
+    val studentLocalLiveData=Transformations.switchMap(inquireLiveData){
+        Repository.getSaveStudent()
+    }
+    fun  refreshSelfInquire(){
+        inquireLiveData.value=inquireLiveData.value
     }
 }

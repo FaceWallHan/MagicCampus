@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MagicCampus</string>
+    <string name="app_name">魔幻校园</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -13,4 +13,11 @@
     <string name="password">密码</string>
     <string name="login">登录</string>
     <string name="todo">TODO</string>
+    <string name="changePassWord">更改密码</string>
+    <string name="submitFeedback">提交反馈</string>
+    <string name="exit">退出登录</string>
+    <string name="repair">报修</string>
+    <string name="eat">点餐</string>
+    <string name="dynamic">动态</string>
+    <string name="more">更多</string>
 </resources>

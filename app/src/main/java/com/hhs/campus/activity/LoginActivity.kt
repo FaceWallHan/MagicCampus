@@ -1,14 +1,14 @@
-package com.hhs.campus
+package com.hhs.campus.activity
 
 
-import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.hhs.campus.R
+import com.hhs.campus.StudentViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -16,10 +16,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        viewModel.refreshSelf()
+        viewModel.refreshSelfExit()
         viewModel.statusLiveData.observe(this, Observer { result->
             if (result.isSuccess&&result.getOrNull()==true){
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         })
@@ -32,12 +32,12 @@ class LoginActivity : AppCompatActivity() {
             if (result.isSuccess){
                 Toast.makeText(this,"登录成功",Toast.LENGTH_LONG).show()
                 result.getOrNull()?.let { viewModel.saveStudent(it) }
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }else{
                 Toast.makeText(this,"登录失败",Toast.LENGTH_LONG).show()
             }
         })
-        viewModel.studentLocalLiveData.observe(this, Observer {})
+        viewModel.saveLocalLiveData.observe(this, Observer {})
     }
 }

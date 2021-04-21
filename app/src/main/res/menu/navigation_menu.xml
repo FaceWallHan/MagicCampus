@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:title="@string/repair"
+            android:id="@+id/repair"
+            android:icon="@drawable/repair"/>
+        <item
+            android:title="@string/eat"
+            android:id="@+id/eat"
+            android:icon="@drawable/eat"/>
+        <item
+            android:title="@string/dynamic"
+            android:id="@+id/dynamic"
+            android:icon="@drawable/dynamic"/>
+        <item
+            android:title="@string/more"
+            android:id="@+id/more"
+            android:icon="@drawable/more"/>
+    </group>
+</menu>

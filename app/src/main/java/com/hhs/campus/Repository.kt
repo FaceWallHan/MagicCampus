@@ -1,14 +1,14 @@
 package com.hhs.campus
 
-import androidx.core.content.edit
 import androidx.lifecycle.liveData
-import com.google.gson.Gson
+import com.hhs.campus.dao.StudentDao
+import com.hhs.campus.net.MagicCampusNetWork
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 object Repository {
     fun saveStudent(student: Student)= fire(Dispatchers.IO){
-        val success=StudentDao.saveStudent(student)
+        val success= StudentDao.saveStudent(student)
         if (success){
             Result.success(student)
         }else{
@@ -16,15 +16,15 @@ object Repository {
         }
     }
     fun  isStudentSaved()=fire(Dispatchers.IO){
-        val success=StudentDao.isStudentSaved()
+        val success= StudentDao.isStudentSaved()
         if (success){
             Result.success(success)
         }else{
             Result.failure(RuntimeException("student status is null"))
         }
     }
-    fun  getSavePlace()=fire(Dispatchers.IO){
-        val success=StudentDao.getSaveStudent()
+    fun  getSaveStudent()=fire(Dispatchers.IO){
+        val success= StudentDao.getSaveStudent()
         success.let {
             Result.success(success)
         }

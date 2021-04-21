@@ -86,7 +86,7 @@
         app:layout_constraintGuide_percent="0.85" />
 
     <Button
-        android:background="@color/mainBg"
+        android:background="@color/colorPrimary"
         android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
