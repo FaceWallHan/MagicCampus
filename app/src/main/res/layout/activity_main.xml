@@ -14,8 +14,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimary"/>
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/guideline6"

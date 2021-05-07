@@ -8,7 +8,6 @@
     android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@drawable/major_small"
         android:id="@+id/headIcon"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -18,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textSize="@dimen/mainTextSize"
         android:textColor="#fff"
         android:id="@+id/id_tv"
         android:layout_width="wrap_content"
@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/headIcon" />
 
     <TextView
+        android:textSize="@dimen/mainTextSize"
         android:textColor="#fff"
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"

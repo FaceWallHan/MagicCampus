@@ -6,7 +6,7 @@ import android.content.Context
 class AppClient:Application() {
     companion object{
         lateinit var context:Context
-        val sharedName="magicCampus"
+        const val sharedName="magicCampus"
     }
     override fun onCreate() {
         super.onCreate()

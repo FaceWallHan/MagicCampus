@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.gson.Gson
 import com.hhs.campus.AppClient
-import com.hhs.campus.Student
+import com.hhs.campus.bean.Student
+
 
 object StudentDao {
     private const val selfKey="student"

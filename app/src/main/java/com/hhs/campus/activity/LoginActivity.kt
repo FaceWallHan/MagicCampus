@@ -3,12 +3,12 @@ package com.hhs.campus.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.R
-import com.hhs.campus.StudentViewModel
+import com.hhs.campus.utils.showToast
+import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -16,11 +16,16 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        viewModel.refreshSelfExit()
-        viewModel.statusLiveData.observe(this, Observer { result->
-            if (result.isSuccess&&result.getOrNull()==true){
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+        viewModel.refreshSelfInquire()
+        viewModel.studentLocalLiveData.observe(this, Observer { result->
+            if (result.isSuccess){
+                val student = result.getOrNull()
+                student?.let {
+                    if (!it.isNull()){
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                }
             }
         })
         login.setOnClickListener {
@@ -30,12 +35,12 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.studentLiveData.observe(this, Observer { result->
             if (result.isSuccess){
-                Toast.makeText(this,"登录成功",Toast.LENGTH_LONG).show()
+                "登录成功".showToast()
                 result.getOrNull()?.let { viewModel.saveStudent(it) }
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }else{
-                Toast.makeText(this,"登录失败",Toast.LENGTH_LONG).show()
+                "登录失败".showToast()
             }
         })
         viewModel.saveLocalLiveData.observe(this, Observer {})

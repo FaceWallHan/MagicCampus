@@ -1,8 +1,11 @@
-package com.hhs.campus
+package com.hhs.campus.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.hhs.campus.Repository
+import com.hhs.campus.bean.Login
+import com.hhs.campus.bean.Student
 
 class StudentViewModel:ViewModel() {
     private val loginLiveData=MutableLiveData<Login>()
@@ -19,14 +22,6 @@ class StudentViewModel:ViewModel() {
     }
     fun  saveStudent(student: Student){
         saveLiveData.value=student
-    }
-    //
-    private val existLiveData=MutableLiveData<Boolean>()
-    val statusLiveData=Transformations.switchMap(existLiveData){
-        Repository.isStudentSaved()
-    }
-    fun  refreshSelfExit(){
-        existLiveData.value=existLiveData.value
     }
     //
     private val inquireLiveData=MutableLiveData<Student>()

@@ -1,9 +1,13 @@
 package com.hhs.campus
 
 import androidx.lifecycle.liveData
+import com.hhs.campus.bean.Login
+import com.hhs.campus.bean.Repair
+import com.hhs.campus.bean.Student
 import com.hhs.campus.dao.StudentDao
 import com.hhs.campus.net.MagicCampusNetWork
 import kotlinx.coroutines.Dispatchers
+import okhttp3.MultipartBody
 import kotlin.coroutines.CoroutineContext
 
 object Repository {
@@ -31,14 +35,56 @@ object Repository {
     }
     fun loginStudent(login: Login)=
         fire(Dispatchers.IO) {
-            val loginStudent = MagicCampusNetWork.loginStudent(login)
-            if (loginStudent.status == "200") {
-                val student = loginStudent.student
+            val response = MagicCampusNetWork.loginStudent(login)
+            if (response.isSuccess()){
+                val student=response.data
                 Result.success(student)
             } else {
-                Result.failure(RuntimeException("response status is ${loginStudent.status}"))
+                Result.failure(RuntimeException("response status is ${response.status}"))
             }
         }
+    fun getSomeAnnouncement(student: Student)=
+        fire(Dispatchers.IO) {
+            val response = MagicCampusNetWork.getSomeAnnouncement(student)
+            if (response.isSuccess()){
+                val announcement=response.data
+                Result.success(announcement)
+            } else {
+                Result.failure(RuntimeException("response status is ${response.status}"))
+            }
+        }
+    fun uploadFile(part: MultipartBody.Part)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.uploadFile(part)
+        if (response.isSuccess()){
+            Result.success(response.data)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getRepairProject()= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getRepairProject()
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getRepairArea()= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getRepairArea()
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun sendRepairForm(repair: Repair)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.sendRepairForm(repair)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
     //suspend-->表示所有传入的Lambda表达式中的代码也是拥有挂起函数上下文的。
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {

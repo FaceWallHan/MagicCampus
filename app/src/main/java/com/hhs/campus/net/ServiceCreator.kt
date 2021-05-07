@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceCreator {
-    private const val BASE_URL="http://192.168.43.58:8080/api/magicCampus/"
+    private const val BASE_URL="http://39.101.165.25:8080/magiccampus/"
     private val retrofit=Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
