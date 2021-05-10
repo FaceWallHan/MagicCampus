@@ -8,7 +8,6 @@ data class RepairArea(val smallArea:String,val bigArea:String)
 data class Repair(var s_id:String="",
                   var repairArea:String="", var repairProject: String="", var phone:String=""
                   , var date:String="", var time :String="", var content:String="",
-                  var image:String="", var status:String="",var address:String=""){
+                  var image:String="",var address:String="",val schedule:String="已报修"){
     fun isNull()=(address==""||repairArea==""||repairProject==""||content=="")
 }
-data class Data(val data:String)

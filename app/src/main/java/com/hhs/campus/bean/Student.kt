@@ -5,3 +5,4 @@ data class Student(var id:Int=0,var name:String="",var sex:String=""
     fun  isNull()=(id==0 || name==""|| sex==""|| idCard==""|| address==""|| avatar=="")
 }
 data class Login(var id:String="",var password:String="")
+data class ImageHeader(var id: Int=0,var fileName:String="")

@@ -1,11 +1,18 @@
 package com.hhs.campus.utils
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 
 object ImageUtil {
@@ -28,6 +35,13 @@ object ImageUtil {
             ExifInterface.ORIENTATION_ROTATE_180->rotateBitmap(bitmap,180)
             ExifInterface.ORIENTATION_ROTATE_270->rotateBitmap(bitmap,270)
             else -> bitmap
+        }
+    }
+    fun uploadLocalImage(file: File,context: Context,block:(part: MultipartBody.Part)->Unit){
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            val body= RequestBody.create(MediaType.parse("image/*"),file)
+            val part= MultipartBody.Part.createFormData("picture",file.name,body)
+            block(part)
         }
     }
 }

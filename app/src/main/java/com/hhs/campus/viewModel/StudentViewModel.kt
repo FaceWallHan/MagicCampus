@@ -4,8 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.hhs.campus.Repository
+import com.hhs.campus.bean.ImageHeader
 import com.hhs.campus.bean.Login
 import com.hhs.campus.bean.Student
+import okhttp3.MultipartBody
 
 class StudentViewModel:ViewModel() {
     private val loginLiveData=MutableLiveData<Login>()
@@ -30,5 +32,21 @@ class StudentViewModel:ViewModel() {
     }
     fun  refreshSelfInquire(){
         inquireLiveData.value=inquireLiveData.value
+    }
+    //发送头像
+    private val imageLiveData=MutableLiveData<MultipartBody.Part>()
+    val imageUrl=Transformations.switchMap(imageLiveData){query->
+        Repository.uploadHeaderFile(query)
+    }
+    fun uploadFile(part: MultipartBody.Part){
+        imageLiveData.value=part
+    }
+    //更改学生头像
+    private val headLiveData=MutableLiveData<ImageHeader>()
+    val headResponse=Transformations.switchMap(headLiveData){result->
+        Repository.updateHeader(result)
+    }
+    fun updateHead(imageHeader: ImageHeader){
+        headLiveData.value=imageHeader
     }
 }

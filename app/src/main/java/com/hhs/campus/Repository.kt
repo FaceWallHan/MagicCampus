@@ -1,6 +1,7 @@
 package com.hhs.campus
 
 import androidx.lifecycle.liveData
+import com.hhs.campus.bean.ImageHeader
 import com.hhs.campus.bean.Login
 import com.hhs.campus.bean.Repair
 import com.hhs.campus.bean.Student
@@ -43,9 +44,9 @@ object Repository {
                 Result.failure(RuntimeException("response status is ${response.status}"))
             }
         }
-    fun getSomeAnnouncement(student: Student)=
+    fun getSomeAnnouncement()=
         fire(Dispatchers.IO) {
-            val response = MagicCampusNetWork.getSomeAnnouncement(student)
+            val response = MagicCampusNetWork.getSomeAnnouncement()
             if (response.isSuccess()){
                 val announcement=response.data
                 Result.success(announcement)
@@ -79,6 +80,22 @@ object Repository {
     }
     fun sendRepairForm(repair: Repair)= fire(Dispatchers.IO){
         val response=MagicCampusNetWork.sendRepairForm(repair)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun uploadHeaderFile(part: MultipartBody.Part)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.uploadHeaderFile(part)
+        if (response.isSuccess()){
+            Result.success(response.data)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun updateHeader(imageHeader: ImageHeader)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.updateHeader(imageHeader)
         if (response.isSuccess()){
             Result.success(response)
         }else{

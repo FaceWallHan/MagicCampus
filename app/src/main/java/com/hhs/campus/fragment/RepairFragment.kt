@@ -13,12 +13,10 @@ import com.hhs.campus.R
 import com.hhs.campus.adapter.AnnouncementAdapter
 import com.hhs.campus.adapter.OperateAdapter
 import com.hhs.campus.viewModel.AnnouncementViewModel
-import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.repair_layout.*
 
 class RepairFragment:Fragment() {
     private val announcementViewModel by lazy { ViewModelProvider(this).get(AnnouncementViewModel::class.java) }
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         addOperate()
@@ -29,13 +27,7 @@ class RepairFragment:Fragment() {
         return inflater.inflate(R.layout.repair_layout,container,false)
     }
     private fun  addAnnouncementData(){
-        studentViewModel.refreshSelfInquire()
-        studentViewModel.studentLocalLiveData.observe(viewLifecycleOwner, Observer { result->
-            if (result.isSuccess){
-                result.getOrNull()?.let { announcementViewModel.setStudentId(it) }
-            }
-        })
-
+        announcementViewModel.setStudentId()
         announcementViewModel.listLiveDate.observe(viewLifecycleOwner, Observer { result->
             if (result.isSuccess){
                 val adapter= result.getOrNull()?.let { AnnouncementAdapter(it) }

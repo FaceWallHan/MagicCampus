@@ -8,10 +8,10 @@ import com.hhs.campus.bean.Student
 
 class AnnouncementViewModel:ViewModel() {
     private val idLiveData=MutableLiveData<Student>()
-    val listLiveDate=Transformations.switchMap(idLiveData){query->
-        Repository.getSomeAnnouncement(query)
+    val listLiveDate=Transformations.switchMap(idLiveData){
+        Repository.getSomeAnnouncement()
     }
-    fun setStudentId(student: Student){
-        idLiveData.value= student
+    fun setStudentId(){
+        idLiveData.value= idLiveData.value
     }
 }

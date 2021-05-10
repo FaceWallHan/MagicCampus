@@ -1,13 +1,11 @@
 package com.hhs.campus.net.work
 
 import com.hhs.campus.bean.Announcement
-import com.hhs.campus.bean.Student
 import com.hhs.campus.utils.MagicResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.GET
 
 interface AnnouncementService {
-    @POST("readAnnouncementStu")
-    fun getSomeAnnouncement(@Body student: Student):Call<MagicResponse<List<Announcement>>>
+    @GET("viewAnnouncementStu")
+    fun getSomeAnnouncement():Call<MagicResponse<List<Announcement>>>
 }

@@ -1,17 +1,13 @@
 package com.hhs.campus.activity
 
-import android.Manifest
 import android.app.DatePickerDialog
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.R
 import com.hhs.campus.bean.Repair
@@ -24,9 +20,6 @@ import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.RepairViewModel
 import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.activity_want_repair.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import java.util.*
 
@@ -47,8 +40,7 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         repairViewModel.imageUrl.observe(this, androidx.lifecycle.Observer { result->
             if (result.isSuccess){
-//                result.getOrNull()?.let { repair.image=it.fileName }
-                repair.image="http://39.101.165.25:8080/image/364.jpg"
+                result.getOrNull()?.let { repair.image=it.fileName }
             }
         })
         studentViewModel.refreshSelfInquire()
@@ -83,13 +75,14 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
     }
     private fun chooseTime(){
         val times=resources.getStringArray(R.array.time_array)
-        val dialog=AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setTitle(resources.getString(R.string.choose_reserve_time))
-            .setSingleChoiceItems(times,0) { _, p1 ->
-                choose_reserve_time.setText(times[p1]) }
             .setNegativeButton("取消",null)
             .setPositiveButton("确定",null)
-        dialog.show()
+            .setSingleChoiceItems(times,0) { _, p1 ->
+                choose_reserve_time.setText(times[p1])
+            }
+            .show()
     }
     private fun checkRepairInfo(){
         repair.address=repair_address.text.toString()
@@ -115,7 +108,6 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
             }else{
                 "发送失败".showToast()
             }
-            Log.d("111111111111111", "checkRepairInfo:${result}")
         })
     }
     private fun chooseDate(){
@@ -148,19 +140,17 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         choose_repair_image.setImageBitmap(bitmap)
         imageDialog.dismiss()
         val fileName = FileUtil.getPath(this,data)
-        uploadLocalImage(File(fileName))
+        ImageUtil.uploadLocalImage(File(fileName),this){ part->
+            repairViewModel.uploadFile(part)
+        }
     }
     override fun takePicture(imageUri: Uri, file: File) {
         val bitmap= BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
         choose_repair_image.setImageBitmap(ImageUtil.rotateIfRequired(bitmap,file))
         imageDialog.dismiss()
-        uploadLocalImage(file)
-    }
-    private fun uploadLocalImage(file: File){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            val body= RequestBody.create(MediaType.parse("image/*"),file)
-            val part= MultipartBody.Part.createFormData("picture",file.name,body)
+        ImageUtil.uploadLocalImage(file,this){ part->
             repairViewModel.uploadFile(part)
         }
     }
+
 }
