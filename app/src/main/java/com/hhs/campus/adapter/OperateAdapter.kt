@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hhs.campus.R
+import com.hhs.campus.activity.ShowRepairActivity
 import com.hhs.campus.activity.WantRepairActivity
 
 class OperateAdapter (private val list: List<String>): RecyclerView.Adapter<OperateAdapter.ViewHolder>(){
@@ -21,6 +22,8 @@ class OperateAdapter (private val list: List<String>): RecyclerView.Adapter<Oper
         view.setOnClickListener {
             when(viewHolder.adapterPosition){
                 0->context.startActivity(Intent(context,WantRepairActivity::class.java))
+                1->context.startActivity(Intent(context,ShowRepairActivity::class.java))
+//                2->context.startActivity(Intent(context,ScanCodeActivity::class.java))
             }
         }
         return viewHolder

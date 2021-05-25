@@ -15,7 +15,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface StudentService {
-    @POST("getStudentLogin")
+    @POST("postStudentLogin")
     fun login(@Body login: Login):Call<MagicResponse<Student>>
 
     @Multipart

@@ -17,7 +17,8 @@
     <string name="wantRepair">我要报修</string>
     <string name="waitRepair">等待维修</string>
     <string name="repairRecord">维修记录</string>
-    <string name="waitEvaluate">等待评价</string>
+    <string name="repairDetails">维修详情</string>
+    <string name="scanCode_Repair">扫码报修</string>
     <string name="repair_space">报修区域</string>
     <string name="choose_repair_space">请选择报修区域</string>
     <string name="submit">提交</string>
@@ -35,6 +36,8 @@
     <string name="input_repair_content">请详尽填写报修内容，长度为2–50字</string>
     <string name="album_selection">相册选取</string>
     <string name="photograph">拍照</string>
+    <string name="empty_info">暂无数据</string>
+    <string name="repair_feedback">维修评价</string>
     <string-array name="time_array">
         <item>08:00–10:00</item>
         <item>10:00–12:00</item>

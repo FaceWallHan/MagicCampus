@@ -37,7 +37,7 @@ object ImageUtil {
             else -> bitmap
         }
     }
-    fun uploadLocalImage(file: File,context: Context,block:(part: MultipartBody.Part)->Unit){
+    fun uploadLocalImage(file: File,context: Context,block:  (part: MultipartBody.Part)->Unit){
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             val body= RequestBody.create(MediaType.parse("image/*"),file)
             val part= MultipartBody.Part.createFormData("picture",file.name,body)

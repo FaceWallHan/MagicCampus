@@ -40,5 +40,6 @@ class AnnouncementAdapter (private val list:List<Announcement>):RecyclerView.Ada
         val item=list[position]
         holder.title.text=item.title
         holder.img.load(item.image)
+//        Glide.with(context).load(item.image).into(holder.img)
     }
 }

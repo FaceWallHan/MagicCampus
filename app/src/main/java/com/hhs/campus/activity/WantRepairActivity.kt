@@ -1,6 +1,7 @@
 package com.hhs.campus.activity
 
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.bean.Repair
 import com.hhs.campus.dialog.ImageDialog
@@ -32,16 +34,34 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
     private val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
     private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var repair=Repair()
+    private lateinit var progressDialog:ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_want_repair)
         setSupportActionBar(want_repair)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val serializableExtra = intent?.getSerializableExtra(AppClient.repair)
+        serializableExtra?.let {
+            repair=it as Repair
+            choose_area.setText(it.repairArea)
+            choose_area.isEnabled=false
+            repair_address.setText(it.address)
+            repair_address.isEnabled=false
+            choose_project.setText(it.repairProject)
+            choose_project.isEnabled=false
+        }
+        progressDialog=ProgressDialog(this)
+        progressDialog.setTitle("loading")
+        progressDialog.setCancelable(false)
         repairViewModel.imageUrl.observe(this, androidx.lifecycle.Observer { result->
             if (result.isSuccess){
                 result.getOrNull()?.let { repair.image=it.fileName }
+                "上传成功".showToast()
+            }else{
+                "上传失败".showToast()
             }
+            progressDialog.dismiss()
         })
         studentViewModel.refreshSelfInquire()
         studentViewModel.studentLocalLiveData.observe(this, androidx.lifecycle.Observer { result->
@@ -64,14 +84,6 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         repairViewModel.selectAreaLiveData.observe(this, androidx.lifecycle.Observer {result->
             choose_area.setText(result)
         })
-    }
-    private fun chooseArea(){
-        selectDialog.show(supportFragmentManager,"")
-        repairViewModel.refreshSelfArea()
-    }
-    private fun chooseProject(){
-        selectDialog.show(supportFragmentManager,"")
-        repairViewModel.refreshSelfProject()
     }
     private fun chooseTime(){
         val times=resources.getStringArray(R.array.time_array)
@@ -101,20 +113,37 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
             "报修区域，报修地址，报修项目,报修内容不能为空!".showToast()
             return
         }
-        repairViewModel.sendRepairForm(repair)
-        repairViewModel.repairForm.observe(this, androidx.lifecycle.Observer { result->
-            if (result.isSuccess){
-                "发送成功".showToast()
-            }else{
-                "发送失败".showToast()
-            }
-        })
+        if (repair.worker==""){
+            //普通报修
+            repairViewModel.sendRepairForm(repair)
+            repairViewModel.repairForm.observe(this, androidx.lifecycle.Observer { result->
+                if (result.isSuccess){
+                    "发送成功".showToast()
+                }else{
+                    "发送失败".showToast()
+                }
+            })
+        }else{
+            //扫码报修
+            repairViewModel.sendRepairFormCode(repair)
+            repairViewModel.repairFormCode.observe(this, androidx.lifecycle.Observer { result->
+                if (result.isSuccess){
+                    "发送成功".showToast()
+                }else{
+                    "发送失败".showToast()
+                }
+            })
+        }
     }
     private fun chooseDate(){
         val calendar=Calendar.getInstance()
         val dialog= DatePickerDialog(this,
             DatePickerDialog.OnDateSetListener { _, p1, p2, p3 ->
-                val date= "$p1-${p2+1}-$p3"
+                val date = if (p2<9){
+                    "$p1-0${p2+1}-$p3"
+                }else{
+                    "$p1-${p2+1}-$p3"
+                }
                 choose_reserve_date.setText(date)
             },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
         dialog.show()
@@ -129,8 +158,14 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
             R.id.choose_reserve_date->chooseDate()
             R.id.choose_reserve_time->chooseTime()
             R.id.choose_repair_image->imageDialog.show(supportFragmentManager,"")
-            R.id.choose_project->chooseProject()
-            R.id.choose_area->chooseArea()
+            R.id.choose_project->{
+                selectDialog.show(supportFragmentManager,"")
+                repairViewModel.refreshSelfProject()
+            }
+            R.id.choose_area->{
+                selectDialog.show(supportFragmentManager,"")
+                repairViewModel.refreshSelfArea()
+            }
             R.id.submit_repair->checkRepairInfo()
         }
     }
@@ -142,6 +177,7 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         val fileName = FileUtil.getPath(this,data)
         ImageUtil.uploadLocalImage(File(fileName),this){ part->
             repairViewModel.uploadFile(part)
+            progressDialog.show()
         }
     }
     override fun takePicture(imageUri: Uri, file: File) {
@@ -150,6 +186,7 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         imageDialog.dismiss()
         ImageUtil.uploadLocalImage(file,this){ part->
             repairViewModel.uploadFile(part)
+            progressDialog.show()
         }
     }
 

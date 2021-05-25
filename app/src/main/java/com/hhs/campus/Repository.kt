@@ -1,10 +1,7 @@
 package com.hhs.campus
 
 import androidx.lifecycle.liveData
-import com.hhs.campus.bean.ImageHeader
-import com.hhs.campus.bean.Login
-import com.hhs.campus.bean.Repair
-import com.hhs.campus.bean.Student
+import com.hhs.campus.bean.*
 import com.hhs.campus.dao.StudentDao
 import com.hhs.campus.net.MagicCampusNetWork
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +83,14 @@ object Repository {
             Result.failure(RuntimeException("response status is ${response.status}"))
         }
     }
+    fun sendRepairFormByCode(repair: Repair)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.sendRepairFormByCode(repair)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
     fun uploadHeaderFile(part: MultipartBody.Part)= fire(Dispatchers.IO){
         val response=MagicCampusNetWork.uploadHeaderFile(part)
         if (response.isSuccess()){
@@ -96,6 +101,30 @@ object Repository {
     }
     fun updateHeader(imageHeader: ImageHeader)= fire(Dispatchers.IO){
         val response=MagicCampusNetWork.updateHeader(imageHeader)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getAllRepairList(id:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getAllRepairList(id)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getRecordByRepairId(repairId:String)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getRecordByRepairId(repairId)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun submitAppraise(appraise:RepairAppraise)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.submitAppraise(appraise.repairId,appraise.id,appraise.name,appraise.appraise,appraise.description)
         if (response.isSuccess()){
             Result.success(response)
         }else{

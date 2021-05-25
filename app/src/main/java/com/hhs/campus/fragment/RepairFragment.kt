@@ -42,9 +42,8 @@ class RepairFragment:Fragment() {
     }
     private fun  addOperate(){
         val list= mutableListOf(resources.getString(R.string.wantRepair),
-            resources.getString(R.string.waitRepair),
             resources.getString(R.string.repairRecord),
-            resources.getString(R.string.waitEvaluate))
+            resources.getString(R.string.scanCode_Repair))
         val adapter= OperateAdapter(list)
         val layoutManager=LinearLayoutManager(activity)
         operateList.addItemDecoration(DividerItemDecoration(activity,DividerItemDecoration.VERTICAL))

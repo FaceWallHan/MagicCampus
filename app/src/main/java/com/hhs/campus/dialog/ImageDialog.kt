@@ -20,8 +20,8 @@ import java.io.File
 
 class ImageDialog : DialogFragment() ,View.OnClickListener{
     private val takePhoto=1
-    lateinit var imageUri: Uri
-    lateinit var outputImage: File
+    private lateinit var imageUri: Uri
+    private lateinit var outputImage: File
     private val fromAlbum=2
     lateinit var addPictureListener:OnAddPictureListener
     override fun onCreate(savedInstanceState: Bundle?) {

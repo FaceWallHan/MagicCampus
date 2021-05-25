@@ -92,10 +92,11 @@ class SelectRepairDialog :DialogFragment(),View.OnClickListener ,AdapterView.OnI
         child_spinner.adapter=childAdapter
     }
     private fun  chooseType(){
+        val repairSome=group_spinner.selectedItem.toString()+"-"+child_spinner.selectedItem.toString()
         if (isProject){
             repairViewModel.setSelectProjectRepair(child_spinner.selectedItem.toString())
         }else{
-            repairViewModel.setSelectAreaRepair(child_spinner.selectedItem.toString())
+            repairViewModel.setSelectAreaRepair(repairSome)
         }
     }
     override fun onStart() {

@@ -7,6 +7,8 @@ class AppClient:Application() {
     companion object{
         lateinit var context:Context
         const val sharedName="magicCampus"
+        const val repairId="repairId"
+        const val repair="repair"
     }
     override fun onCreate() {
         super.onCreate()

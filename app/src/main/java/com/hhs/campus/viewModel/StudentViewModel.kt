@@ -39,7 +39,7 @@ class StudentViewModel:ViewModel() {
         Repository.uploadHeaderFile(query)
     }
     fun uploadFile(part: MultipartBody.Part){
-        imageLiveData.value=part
+        imageLiveData.postValue(part)
     }
     //更改学生头像
     private val headLiveData=MutableLiveData<ImageHeader>()

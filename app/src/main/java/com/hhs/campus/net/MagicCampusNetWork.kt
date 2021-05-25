@@ -25,9 +25,14 @@ object MagicCampusNetWork {
     suspend fun getSomeAnnouncement()= announcementService.getSomeAnnouncement().await()
     private val repairService=ServiceCreator.create(RepairService::class.java)
     suspend fun uploadFile( part: MultipartBody.Part)= repairService.uploadFile(part).await()
+    suspend fun getAllRepairList( id: Int)= repairService.getAllRepairList(id).await()
+    suspend fun getRecordByRepairId( repairId: String)= repairService.getRecordByRepairId(repairId).await()
     suspend fun getRepairProject()= repairService.getRepairProject().await()
     suspend fun getRepairArea()= repairService.getRepairArea().await()
     suspend fun sendRepairForm(repair: Repair)= repairService.sendRepairForm(repair).await()
+    suspend fun sendRepairFormByCode(repair: Repair)= repairService.sendRepairFormByCode(repair).await()
+    suspend fun submitAppraise(repairId:String,id: Int,name:String,appraise:String,description:String)
+            = repairService.submitAppraise(repairId,id,name,appraise,description).await()
     private suspend fun <T> Call<T>.await():T{
         return suspendCoroutine { continuation ->
             enqueue(object :Callback<T>{
