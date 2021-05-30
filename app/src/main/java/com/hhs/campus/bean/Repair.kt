@@ -11,8 +11,9 @@ data class Repair(var s_id:String="",
                   var repairArea:String="", var repairProject: String="", var phone:String=""
                   , var date:String="", var time :String="", var content:String="",
                   var image:String="",var address:String="",val schedule:String="已报修",
-                  var appraise:String="",var id:String="",var worker:String="",var deviceId:String=""):Serializable{
+                  var appraise:String="",var id:Int=-1,var worker:String="",var deviceId:Int=-1):Serializable{
     fun isNull()=(address==""||repairArea==""||repairProject==""||content=="")
+    fun isCodeNull()=(repairArea==""||repairProject==""||address==""||worker==""||deviceId==-1)
 }
 data class RepairRecord(val name:String="",val time:String="",val status:String="",val phone:String="")
 data class RepairAppraise(

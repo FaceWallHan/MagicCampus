@@ -77,9 +77,9 @@ class RepairViewModel:ViewModel() {
     //扫码发送维修订单
     private val repairFormCodeLiveData=MutableLiveData<Repair>()
     val repairFormCode=Transformations.switchMap(repairFormCodeLiveData){result->
-        Repository.sendRepairForm(result)
+        Repository.sendRepairFormByCode(result)
     }
     fun sendRepairFormCode(repair: Repair){
-        repairFormLiveData.value=repair
+        repairFormCodeLiveData.value=repair
     }
 }

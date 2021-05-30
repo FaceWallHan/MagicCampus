@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.bingoogolapple.qrcode.zbar.ZBarView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/zbar_view"
+    app:qrcv_isAutoZoom="true"
+    app:qrcv_isShowLocationPoint="true"
+    app:qrcv_isOnlyDecodeScanBoxArea="true"
+    app:qrcv_verticalBias="0.5"
+    app:qrcv_cornerDisplayType="center"
+    app:qrcv_cornerColor="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

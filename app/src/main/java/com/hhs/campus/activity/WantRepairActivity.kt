@@ -122,18 +122,23 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
                 }else{
                     "发送失败".showToast()
                 }
+                progressDialog.dismiss()
             })
         }else{
-            //扫码报修
-            repairViewModel.sendRepairFormCode(repair)
-            repairViewModel.repairFormCode.observe(this, androidx.lifecycle.Observer { result->
-                if (result.isSuccess){
-                    "发送成功".showToast()
-                }else{
-                    "发送失败".showToast()
-                }
-            })
+            if (!repair.isCodeNull()){
+                //扫码报修
+                repairViewModel.sendRepairFormCode(repair)
+                repairViewModel.repairFormCode.observe(this, androidx.lifecycle.Observer { result->
+                    if (result.isSuccess){
+                        "发送成功".showToast()
+                    }else{
+                        "发送失败".showToast()
+                    }
+                    progressDialog.dismiss()
+                })
+            }
         }
+        progressDialog.show()
     }
     private fun chooseDate(){
         val calendar=Calendar.getInstance()
