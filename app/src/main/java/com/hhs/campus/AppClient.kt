@@ -9,6 +9,8 @@ class AppClient:Application() {
         const val sharedName="magicCampus"
         const val repairId="repairId"
         const val repair="repair"
+        const val imageList="imageList"
+        const val chooseImage=1
     }
     override fun onCreate() {
         super.onCreate()
