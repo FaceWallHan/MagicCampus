@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".AppClient"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.MultipleImageActivity"></activity>
+        <activity android:name=".activity.MultipleImageActivity"/>
         <activity
             android:name=".activity.SendDynamicActivity"
             android:label="@string/send_dynamic" />
@@ -29,7 +30,7 @@
             android:name=".activity.AppraiseRepairActivity"
             android:label="@string/repair_feedback" />
         <activity
-            android:name=".activity.RepairRecordActivity"
+            android:name=".activity.MyRepairActivity"
             android:label="@string/repairDetails" />
         <activity
             android:name=".activity.ShowRepairActivity"

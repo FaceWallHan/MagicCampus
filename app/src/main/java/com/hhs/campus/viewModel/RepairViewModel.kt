@@ -82,4 +82,9 @@ class RepairViewModel:ViewModel() {
     fun sendRepairFormCode(repair: Repair){
         repairFormCodeLiveData.value=repair
     }
+    //将dialogFragment选中的报修项目值传递给activity
+    val repairLiveData=MutableLiveData<Repair>()
+    fun  setRepairId(repair: Repair){
+        repairLiveData.value=repair
+    }
 }

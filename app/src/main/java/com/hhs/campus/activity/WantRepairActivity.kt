@@ -1,7 +1,9 @@
 package com.hhs.campus.activity
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
@@ -35,6 +39,7 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
     private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var repair=Repair()
     private lateinit var progressDialog:ProgressDialog
+    private val permission=1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,7 +167,13 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         when(p0?.id){
             R.id.choose_reserve_date->chooseDate()
             R.id.choose_reserve_time->chooseTime()
-            R.id.choose_repair_image->imageDialog.show(supportFragmentManager,"")
+            R.id.choose_repair_image->{
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    imageDialog.show(supportFragmentManager,"")
+                }else{
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), permission)
+                }
+            }
             R.id.choose_project->{
                 selectDialog.show(supportFragmentManager,"")
                 repairViewModel.refreshSelfProject()
@@ -192,6 +203,18 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         ImageUtil.uploadLocalImage(file,this){ part->
             repairViewModel.uploadFile(part)
             progressDialog.show()
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            permission ->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    imageDialog.show(supportFragmentManager,"")
+                } else {
+                    "申请相机权限被拒绝".showToast()
+                }
+            }
         }
     }
 

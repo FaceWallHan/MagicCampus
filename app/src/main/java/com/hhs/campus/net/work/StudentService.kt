@@ -15,13 +15,13 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface StudentService {
-    @POST("postStudentLogin")
+    @POST("postStudentLogin.do")
     fun login(@Body login: Login):Call<MagicResponse<Student>>
 
     @Multipart
-    @POST("updateStuHeaderServer")
+    @POST("updateStuHeaderServer.do")
     fun uploadFile(@Part part: MultipartBody.Part ):Call<MagicResponse<ImageResponse>>
 
-    @POST("uploadStuHeaderDatabase")
+    @POST("uploadStuHeaderDatabase.do")
     fun updateHeader(@Body imageHeader: ImageHeader):Call<DetermineResponse>
 }

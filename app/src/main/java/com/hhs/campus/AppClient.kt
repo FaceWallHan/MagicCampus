@@ -10,6 +10,7 @@ class AppClient:Application() {
         const val repairId="repairId"
         const val repair="repair"
         const val imageList="imageList"
+        const val imageCount="imageCount"
         const val chooseImage=1
     }
     override fun onCreate() {

@@ -31,7 +31,7 @@ object MagicCampusNetWork {
     suspend fun getRepairArea()= repairService.getRepairArea().await()
     suspend fun sendRepairForm(repair: Repair)= repairService.sendRepairForm(repair).await()
     suspend fun sendRepairFormByCode(repair: Repair)= repairService.sendRepairFormByCode(repair).await()
-    suspend fun submitAppraise(repairId:String,id: Int,name:String,appraise:String,description:String)
+    suspend fun submitAppraise(repairId:Int,id: Int,name:String,appraise:String,description:String)
             = repairService.submitAppraise(repairId,id,name,appraise,description).await()
     private suspend fun <T> Call<T>.await():T{
         return suspendCoroutine { continuation ->

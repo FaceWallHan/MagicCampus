@@ -124,7 +124,7 @@ object Repository {
         }
     }
     fun submitAppraise(appraise:RepairAppraise)= fire(Dispatchers.IO){
-        val response=MagicCampusNetWork.submitAppraise(appraise.repairId,appraise.id,appraise.name,appraise.appraise,appraise.description)
+        val response=MagicCampusNetWork.submitAppraise(appraise.repairId,appraise.studentId,appraise.studentName,appraise.appraise,appraise.description)
         if (response.isSuccess()){
             Result.success(response)
         }else{

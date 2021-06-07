@@ -19,6 +19,7 @@ import com.hhs.campus.utils.OnSelectImageItemListener
 import kotlinx.android.synthetic.main.activity_multiple_image.*
 import java.io.File
 import java.util.stream.Collectors
+import kotlin.properties.Delegates
 
 class MultipleImageActivity : AppCompatActivity() ,View.OnClickListener,AdapterView.OnItemSelectedListener,
     OnSelectImageItemListener {
@@ -26,12 +27,14 @@ class MultipleImageActivity : AppCompatActivity() ,View.OnClickListener,AdapterV
     private val dirList=ArrayList<String>()
     private val imgList=ArrayList<DynamicImage>()
     private val adapter=MultipleImageAdapter(imgList,this)
+    private var imageCount by Delegates.notNull<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiple_image)
         initSome()
     }
     private fun initSome(){
+        imageCount=intent.getIntExtra(AppClient.imageCount,9)
         val layoutManager=StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
         multiple_list.layoutManager=layoutManager
         adapter.onSelectImageItemListener=this
@@ -122,7 +125,7 @@ class MultipleImageActivity : AppCompatActivity() ,View.OnClickListener,AdapterV
 
     @SuppressLint("SetTextI18n")
     override fun onItemClicked(position: Int, status: Boolean) {
-        finish_choose.isEnabled = getSelectCount() in 1..9
-        finish_choose.text= "完成${getSelectCount()}/9"
+        finish_choose.isEnabled = getSelectCount() in 1..imageCount
+        finish_choose.text= "完成${getSelectCount()}/${imageCount}"
     }
 }

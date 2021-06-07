@@ -1,6 +1,7 @@
 package com.hhs.campus.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -16,17 +17,23 @@ import kotlinx.android.synthetic.main.activity_show_repair.*
 class ShowRepairActivity : AppCompatActivity() {
     private val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
     private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    private var studentId =0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_repair)
+        Log.d("1111111111111111", "onCreate: ")
         setSupportActionBar(show_repair_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         studentViewModel.refreshSelfInquire()
         studentViewModel.studentLocalLiveData.observe(this, Observer { result->
             if (result.isSuccess){
-                result.getOrNull()?.id?.let { repairViewModel.getAllRepairList(it) }
+                result.getOrNull()?.id?.let {
+                    studentId=it
+                    repairViewModel.getAllRepairList(it)
+                }
             }
         })
+
         repairViewModel.allRepairList.observe(this, Observer { result->
             if (result.isSuccess){
                 result.getOrNull()?.let {
@@ -42,5 +49,11 @@ class ShowRepairActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
+    }
+    override fun onResume() {
+        super.onResume()
+        if (studentId!=-1){
+            repairViewModel.getAllRepairList(studentId)
+        }
     }
 }

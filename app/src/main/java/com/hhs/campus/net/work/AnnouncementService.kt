@@ -6,6 +6,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface AnnouncementService {
-    @GET("viewAnnouncementStu")
+    @GET("viewAnnouncementStu.do")
     fun getSomeAnnouncement():Call<MagicResponse<List<Announcement>>>
 }

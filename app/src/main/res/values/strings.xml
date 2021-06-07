@@ -18,6 +18,7 @@
     <string name="waitRepair">等待维修</string>
     <string name="repairRecord">维修记录</string>
     <string name="repairDetails">维修详情</string>
+    <string name="repairSchedule">维修进度</string>
     <string name="scanCode_Repair">扫码报修</string>
     <string name="repair_space">报修区域</string>
     <string name="choose_repair_space">请选择报修区域</string>
@@ -51,4 +52,6 @@
     <string name="send_dynamic">发动态</string>
     <string name="dynamic_hint">分享新鲜事…</string>
     <string name="complete">完成</string>
+    <string name="maintain_time">报修时间</string>
+    <string name="maintain_status">报修状态</string>
 </resources>
