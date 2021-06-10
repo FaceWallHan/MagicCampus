@@ -131,6 +131,22 @@ object Repository {
             Result.failure(RuntimeException("response status is ${response.status}"))
         }
     }
+    fun uploadMultipleImg(list:List<MultipartBody.Part>)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.uploadMultipleImg(list)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun releaseDynamic(dynamic: Dynamic)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.releaseDynamic(dynamic)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
     //suspend-->表示所有传入的Lambda表达式中的代码也是拥有挂起函数上下文的。
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {

@@ -1,7 +1,6 @@
 package com.hhs.campus.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -21,7 +20,6 @@ class ShowRepairActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_repair)
-        Log.d("1111111111111111", "onCreate: ")
         setSupportActionBar(show_repair_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         studentViewModel.refreshSelfInquire()

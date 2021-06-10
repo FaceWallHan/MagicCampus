@@ -20,19 +20,26 @@ import coil.load
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.adapter.ShowImageAdapter
+import com.hhs.campus.bean.Dynamic
 import com.hhs.campus.bean.DynamicImage
 import com.hhs.campus.bean.ImageShow
 import com.hhs.campus.utils.OnSelectImageItemListener
 import com.hhs.campus.utils.showToast
+import com.hhs.campus.viewModel.DynamicViewModel
 import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.activity_send_dynamic.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import java.io.File
 
 class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemListener,Consumer<Int>,
     java.util.function.Consumer<Int> {
     private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    private val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
     private lateinit var submitItem:MenuItem
     private val imageList=ArrayList<ImageShow>()
     private val adapter=ShowImageAdapter(imageList,this)
+    private val dynamic=Dynamic()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_dynamic)
@@ -44,6 +51,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
                 result.getOrNull()?.let {
                     dynamic_head.load(it.avatar)
                     dynamic_name.text=it.name
+                    dynamic.sId=it.id
                 }
             }
         })
@@ -54,11 +62,43 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
         adapter.onRemoveItemListener=this
         adapter.consumer=this
         dynamic_image_list.adapter=adapter
+        dynamicViewModel.multipleImgResponse.observe(this, Observer { result->
+            if (result.isSuccess){
+                result.getOrNull()?.data?.fileName?.let {
+                    dynamic.mark=it
+                    dynamicViewModel.uploadDynamic(dynamic)
+                }
+            }
+        })
+        dynamicViewModel.dynamicResponse.observe(this, Observer { result->
+            result.getOrNull()?.let {
+                if (it.isSuccess()){
+                    finish()
+                }else{
+                    "发送失败".showToast()
+                }
+            }
+        })
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.submit_dynamic->{
-                "".showToast()
+                if (imageList.size!=1){
+                    //选择多张图片
+                    val param=ArrayList<MultipartBody.Part>()
+                    for (show in imageList) {
+                        if (!show.isFirst){
+                            val file= File(show.path)
+                            val body=MultipartBody.create(MediaType.parse("image/*"),file)
+                            val part=MultipartBody.Part.createFormData("fileName",file.name,body)
+                            param.add(part)
+                        }
+                    }
+                    dynamicViewModel.sendMultipleImg(param)
+                }else{
+                    //未选择
+                    dynamicViewModel.uploadDynamic(dynamic)
+                }
             }
             else->finish()
         }
@@ -73,7 +113,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar,menu)
         submitItem= menu?.findItem(R.id.submit_dynamic)!!
-        submitItem.isVisible=false
+        changeSubmitItemStatus(false)
         return true
     }
 
@@ -84,7 +124,8 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        p0?.isEmpty()?.let { submitItem.isVisible =!it }
+        p0?.isEmpty()?.let { changeSubmitItemStatus(!it) }
+        dynamic.content=p0.toString()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -100,6 +141,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
                 imageList.add(ImageShow(image.path))
             }
             imageList.add(ImageShow("",true))
+            changeSubmitItemStatus(imageList.size!=1)
             adapter.notifyDataSetChanged()
         }
     }
@@ -119,6 +161,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
 
     override fun onItemClicked(position: Int, status: Boolean) {
         imageList.remove(imageList[position])
+        changeSubmitItemStatus(imageList.size!=1)
         adapter.notifyDataSetChanged()
     }
 
@@ -129,6 +172,10 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
         }else{
             openPhotos()
         }
+    }
+    private fun changeSubmitItemStatus(status:Boolean){
+        //当有文字或者有选择图片时才显示发送按钮
+        submitItem.isVisible =status
     }
 
 }
