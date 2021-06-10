@@ -124,7 +124,23 @@ object Repository {
         }
     }
     fun submitAppraise(appraise:RepairAppraise)= fire(Dispatchers.IO){
-        val response=MagicCampusNetWork.submitAppraise(appraise.repairId,appraise.id,appraise.name,appraise.appraise,appraise.description)
+        val response=MagicCampusNetWork.submitAppraise(appraise.repairId,appraise.studentId,appraise.studentName,appraise.appraise,appraise.description)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun uploadMultipleImg(list:List<MultipartBody.Part>)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.uploadMultipleImg(list)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun releaseDynamic(dynamic: Dynamic)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.releaseDynamic(dynamic)
         if (response.isSuccess()){
             Result.success(response)
         }else{

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:title="@string/repairDetails"
+            android:id="@+id/repair_details"
+            android:icon="@drawable/details"/>
+        <item
+            android:title="@string/repairSchedule"
+            android:id="@+id/repair_record"
+            android:icon="@drawable/record"/>
+    </group>
+</menu>

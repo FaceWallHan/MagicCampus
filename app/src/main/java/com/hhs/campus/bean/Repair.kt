@@ -17,5 +17,5 @@ data class Repair(var s_id:String="",
 }
 data class RepairRecord(val name:String="",val time:String="",val status:String="",val phone:String="")
 data class RepairAppraise(
-    var repairId:String="",
-    var id: Int=0, var name:String="", var appraise:String="", var description:String="")
+    var repairId:Int=-1,
+    var studentId: Int=0, var studentName:String="", var appraise:String="", var description:String="")

@@ -22,13 +22,13 @@ class AppraiseRepairActivity : AppCompatActivity() {
         setContentView(R.layout.activity_appraise)
         setSupportActionBar(appraise_repair)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        appraise.repairId=intent.getStringExtra(AppClient.repairId) as String
+        appraise.repairId=intent.getIntExtra(AppClient.repairId,0)
         studentViewModel.refreshSelfInquire()
         studentViewModel.studentLocalLiveData.observe(this, Observer { result->
             if (result.isSuccess){
                 result.getOrNull()?.let {
-                    appraise.id=it.id
-                    appraise.name=it.name
+                    appraise.studentId=it.id
+                    appraise.studentName=it.name
                 }
             }
         })
