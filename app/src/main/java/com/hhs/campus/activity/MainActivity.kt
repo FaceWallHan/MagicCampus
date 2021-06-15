@@ -2,6 +2,7 @@ package com.hhs.campus.activity
 
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -9,7 +10,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -21,7 +21,7 @@ import com.hhs.campus.R
 import com.hhs.campus.adapter.FragmentAdapter
 import com.hhs.campus.bean.ImageHeader
 import com.hhs.campus.bean.Student
-import com.hhs.campus.dialog.ImageDialog
+import com.hhs.campus.dialog.SelectImageDialog
 import com.hhs.campus.fragment.DynamicFragment
 import com.hhs.campus.fragment.EatFragment
 import com.hhs.campus.fragment.MoreFragment
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), OnAddPictureListener {
     private val viewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private val  itemId= mutableListOf(R.id.repair,R.id.eat,R.id.dynamic,R.id.more)
     private val imageDialog  by lazy {
-        val dialog= ImageDialog()
+        val dialog= SelectImageDialog()
         dialog.addPictureListener=this
         dialog}
     private lateinit var student:Student
@@ -69,11 +69,12 @@ class MainActivity : AppCompatActivity(), OnAddPictureListener {
         }
         navView.setNavigationItemSelectedListener {item->
             when(item.itemId){
-                R.id.exit->AlertDialog.Builder(this)
-                    .setMessage("确定退出吗？")
-                    .setNegativeButton("取消",null)
-                    .setNeutralButton("确定"){ _, _ -> viewModel.saveStudent(Student()) }
-                    .show()
+                R.id.exit->{
+                    ImageUtil.showAlertDialog(this,"确定退出吗？",
+                        DialogInterface.OnClickListener { _, _ ->
+                            viewModel.saveStudent(Student())
+                        },null)
+                }
             }
             if (item.itemId!=R.id.exit){
                 drawerLayout.closeDrawers()

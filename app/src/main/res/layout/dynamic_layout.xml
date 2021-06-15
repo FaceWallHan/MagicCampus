@@ -12,7 +12,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/my_dynamic"
+        android:id="@+id/my_dynamic"
+        app:layout_constraintBottom_toBottomOf="@id/guideline47"
+        app:layout_constraintLeft_toLeftOf="@id/guideline48"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

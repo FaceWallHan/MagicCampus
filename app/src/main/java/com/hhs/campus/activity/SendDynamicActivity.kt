@@ -39,7 +39,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
     private lateinit var submitItem:MenuItem
     private val imageList=ArrayList<ImageShow>()
     private val adapter=ShowImageAdapter(imageList,this)
-    private val dynamic=Dynamic()
+    private val dynamic=Dynamic(imagesList = mutableListOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_dynamic)
@@ -73,6 +73,8 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
         dynamicViewModel.dynamicResponse.observe(this, Observer { result->
             result.getOrNull()?.let {
                 if (it.isSuccess()){
+                    val intent=Intent()
+                    setResult(Activity.RESULT_OK,intent)
                     finish()
                 }else{
                     "发送失败".showToast()

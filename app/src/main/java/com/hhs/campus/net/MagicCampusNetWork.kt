@@ -1,10 +1,7 @@
 package com.hhs.campus.net
 
 
-import com.hhs.campus.bean.Dynamic
-import com.hhs.campus.bean.ImageHeader
-import com.hhs.campus.bean.Login
-import com.hhs.campus.bean.Repair
+import com.hhs.campus.bean.*
 import com.hhs.campus.net.work.AnnouncementService
 import com.hhs.campus.net.work.DynamicService
 import com.hhs.campus.net.work.RepairService
@@ -38,6 +35,12 @@ object MagicCampusNetWork {
     private val dynamicService=ServiceCreator.create<DynamicService>()
     suspend fun uploadMultipleImg(list:List<MultipartBody.Part>)= dynamicService.uploadMultipleImg(list).await()
     suspend fun releaseDynamic(dynamic: Dynamic)= dynamicService.releaseDynamic(dynamic).await()
+    suspend fun getAllDynamic()= dynamicService.getAllDynamic().await()
+    suspend fun getMyDynamic(id:Int)= dynamicService.getMyDynamic(id).await()
+    suspend fun removeMyDynamic(id:Int)= dynamicService.removeMyDynamic(id).await()
+    suspend fun getAllComment(id:Int)= dynamicService.getAllComment(id).await()
+    suspend fun releaseComment(comment: DynamicComment)= dynamicService.releaseComment(comment).await()
+    suspend fun removeComment(id: Int)= dynamicService.removeComment(id).await()
     private suspend fun <T> Call<T>.await():T{
         return suspendCoroutine { continuation ->
             enqueue(object :Callback<T>{

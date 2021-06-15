@@ -147,6 +147,54 @@ object Repository {
             Result.failure(RuntimeException("response status is ${response.status}"))
         }
     }
+    fun getAllDynamic()= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getAllDynamic()
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getMyDynamic(id:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getMyDynamic(id)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun removeMyDynamic(id:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.removeMyDynamic(id)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun getAllComment(id:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getAllComment(id)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun releaseComment(comment: DynamicComment)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.releaseComment(comment)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun removeComment(id: Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.removeComment(id)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
     //suspend-->表示所有传入的Lambda表达式中的代码也是拥有挂起函数上下文的。
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {

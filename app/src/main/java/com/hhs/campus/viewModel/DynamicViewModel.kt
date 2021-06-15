@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.hhs.campus.Repository
 import com.hhs.campus.bean.Dynamic
+import com.hhs.campus.bean.DynamicComment
 import okhttp3.MultipartBody
 
 class DynamicViewModel:ViewModel() {
@@ -23,5 +24,53 @@ class DynamicViewModel:ViewModel() {
     }
     fun uploadDynamic(dynamic: Dynamic){
         dynamicLiveData.value=dynamic
+    }
+    //获取全部动态
+    private val allDynamicLiveData=MutableLiveData<Any?>()
+    val allDynamicList=Transformations.switchMap(allDynamicLiveData){
+        Repository.getAllDynamic()
+    }
+    fun refreshAllDynamic(){
+        allDynamicLiveData.value=allDynamicLiveData
+    }
+    //自己发布的动态
+    private val myDynamicLiveData=MutableLiveData<Int>()
+    val myDynamicList=Transformations.switchMap(myDynamicLiveData){result->
+        Repository.getMyDynamic(result)
+    }
+    fun  setMyStudentId(id:Int){
+        myDynamicLiveData.value=id
+    }
+    //删除动态
+    private val removeLiveData=MutableLiveData<Int>()
+    val removeResponse=Transformations.switchMap(removeLiveData){result->
+        Repository.removeMyDynamic(result)
+    }
+    fun  setRemoveId(id:Int){
+        removeLiveData.value=id
+    }
+    //获取某个动态的评论
+    private val commentIdLiveData=MutableLiveData<Int >()
+    val commentList=Transformations.switchMap(commentIdLiveData){result->
+        Repository.getAllComment(result)
+    }
+    fun setDynamicId(id:Int){
+        commentIdLiveData.value=id
+    }
+    //发布评论
+    private val releaseCommentLiveData=MutableLiveData<DynamicComment>()
+    val releaseCommentResponse=Transformations.switchMap(releaseCommentLiveData){result->
+        Repository.releaseComment(result)
+    }
+    fun sendComment(dynamicComment: DynamicComment){
+        releaseCommentLiveData.value=dynamicComment
+    }
+    //删除评论
+    private val removeCommentLiveData=MutableLiveData<Int>()
+    val removeCommentResponse=Transformations.switchMap(removeCommentLiveData){result->
+        Repository.removeComment(result)
+    }
+    fun removeComment(id: Int){
+        removeCommentLiveData.value=id
     }
 }

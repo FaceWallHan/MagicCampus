@@ -12,6 +12,9 @@ class AppClient:Application() {
         const val imageList="imageList"
         const val imageCount="imageCount"
         const val chooseImage=1
+        const val appraise=2
+        const val dynamic=3
+        const val remove=4
     }
     override fun onCreate() {
         super.onCreate()

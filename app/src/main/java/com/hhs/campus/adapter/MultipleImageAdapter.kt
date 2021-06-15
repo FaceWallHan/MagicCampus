@@ -12,7 +12,7 @@ import com.hhs.campus.R
 import com.hhs.campus.bean.DynamicImage
 import com.hhs.campus.utils.OnSelectImageItemListener
 
-class MultipleImageAdapter (val list:List<DynamicImage>,val context:Context):RecyclerView.Adapter<MultipleImageAdapter.ViewHolder>(){
+class MultipleImageAdapter (val list:List<DynamicImage>, val context:Context, private val showCheck:Boolean=true):RecyclerView.Adapter<MultipleImageAdapter.ViewHolder>(){
     lateinit var onSelectImageItemListener: OnSelectImageItemListener
     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
         val image: ImageView =itemView.findViewById(R.id.multiple_img)
@@ -35,6 +35,11 @@ class MultipleImageAdapter (val list:List<DynamicImage>,val context:Context):Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dynamicImage = list[position]
         Glide.with(context).load(dynamicImage.path).into(holder.image)
-        holder.select.isChecked=dynamicImage.isCheck
+        if (!showCheck){
+            holder.select.visibility=View.INVISIBLE
+        }else{
+            holder.select.visibility=View.VISIBLE
+            holder.select.isChecked=dynamicImage.isCheck
+        }
     }
 }

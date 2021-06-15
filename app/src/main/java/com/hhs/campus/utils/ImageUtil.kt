@@ -1,16 +1,15 @@
 package com.hhs.campus.utils
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import android.provider.MediaStore
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import okhttp3.MediaType
@@ -47,5 +46,11 @@ object ImageUtil {
             block(part)
         }
     }
+    fun showAlertDialog(context: Context,message:String,positiveListener:DialogInterface.OnClickListener,
+                        negativeListener:DialogInterface.OnClickListener?): AlertDialog =AlertDialog.Builder(context)
+        .setMessage(message)
+        .setPositiveButton("确定",positiveListener)
+        .setNegativeButton("取消",negativeListener)
+        .show()
 
 }

@@ -13,9 +13,10 @@ import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.activity.AppraiseRepairActivity
 import com.hhs.campus.activity.MyRepairActivity
+import com.hhs.campus.activity.ShowRepairActivity
 import com.hhs.campus.bean.Repair
 
-class RepairAdapter(private val list: List<Repair>) :RecyclerView.Adapter<RepairAdapter.ViewHolder>(){
+class RepairAdapter(private val list: List<Repair>,val activity:ShowRepairActivity) :RecyclerView.Adapter<RepairAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
         val image:ImageView=itemView.findViewById(R.id.repair_item_image)
         val content:TextView=itemView.findViewById(R.id.repair_item_content)
@@ -38,7 +39,7 @@ class RepairAdapter(private val list: List<Repair>) :RecyclerView.Adapter<Repair
             if (list[viewHolder.adapterPosition].appraise==""){
                 val intent = Intent(context, AppraiseRepairActivity::class.java)
                 intent.putExtra(AppClient.repairId,list[viewHolder.adapterPosition].id)
-                context.startActivity(intent)
+                activity.startActivityForResult(intent,AppClient.appraise)
             }
         }
         return viewHolder

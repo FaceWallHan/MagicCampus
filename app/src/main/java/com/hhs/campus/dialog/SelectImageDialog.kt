@@ -18,7 +18,7 @@ import com.hhs.campus.utils.OnAddPictureListener
 import kotlinx.android.synthetic.main.image_dialog_layout.*
 import java.io.File
 
-class ImageDialog : DialogFragment() ,View.OnClickListener{
+class SelectImageDialog : DialogFragment() ,View.OnClickListener{
     private val takePhoto=1
     private lateinit var imageUri: Uri
     private lateinit var outputImage: File

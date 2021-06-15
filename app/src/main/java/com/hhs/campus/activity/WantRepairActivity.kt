@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.bean.Repair
-import com.hhs.campus.dialog.ImageDialog
+import com.hhs.campus.dialog.SelectImageDialog
 import com.hhs.campus.dialog.SelectRepairDialog
 import com.hhs.campus.utils.FileUtil
 import com.hhs.campus.utils.ImageUtil
@@ -31,7 +31,7 @@ import java.util.*
 
 class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictureListener{
     private val imageDialog  by lazy {
-        val dialog=ImageDialog()
+        val dialog=SelectImageDialog()
         dialog.addPictureListener=this
         dialog}
     private val selectDialog by lazy { SelectRepairDialog() }
@@ -94,7 +94,6 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         val times=resources.getStringArray(R.array.time_array)
         AlertDialog.Builder(this)
             .setTitle(resources.getString(R.string.choose_reserve_time))
-            .setNegativeButton("取消",null)
             .setPositiveButton("确定",null)
             .setSingleChoiceItems(times,0) { _, p1 ->
                 choose_reserve_time.setText(times[p1])

@@ -1,5 +1,7 @@
 package com.hhs.campus.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +59,8 @@ class AppraiseRepairActivity : AppCompatActivity() {
         repairViewModel.repairAppraise.observe(this, Observer { result->
             if (result.isSuccess){
                 "评价成功".showToast()
+                val intent= Intent()
+                setResult(Activity.RESULT_OK,intent)
                 finish()
             }else{
                 "评价失败".showToast()
