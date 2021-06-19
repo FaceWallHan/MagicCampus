@@ -39,4 +39,16 @@ interface DynamicService {
     @FormUrlEncoded
     @POST("modifyComment.do")
     fun removeComment(@Field("id")id:Int):Call<DetermineResponse>
+    //
+    @FormUrlEncoded
+    @POST("getSimpleGreat.do")
+    fun getSimpleGreat(@Field("sId")id:Int,@Field("dynamicId") dynamicId:Int):Call<DetermineResponse>
+    //
+    @FormUrlEncoded
+    @POST("changeGreatStatus.do")
+    fun changeGreatStatus(@Field("sId")id:Int,@Field("dynamicId") dynamicId:Int):Call<DetermineResponse>
+
+    @FormUrlEncoded
+    @POST("querySimpleOneDynamic.do")
+    fun querySimpleOneDynamic(@Field("dynamicId") dynamicId:Int):Call<MagicResponse<Dynamic>>
 }

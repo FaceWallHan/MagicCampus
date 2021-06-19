@@ -195,6 +195,30 @@ object Repository {
             Result.failure(RuntimeException("response status is ${response.status}"))
         }
     }
+    fun getSimpleGreat(id: Int,dynamicId:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.getSimpleGreat(id, dynamicId)
+        if (response.isUnLike()||response.isLike()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun changeGreatStatus(id: Int,dynamicId:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.changeGreatStatus(id, dynamicId)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
+    fun querySimpleOneDynamic(dynamicId:Int)= fire(Dispatchers.IO){
+        val response=MagicCampusNetWork.querySimpleOneDynamic( dynamicId)
+        if (response.isSuccess()){
+            Result.success(response)
+        }else{
+            Result.failure(RuntimeException("response status is ${response.status}"))
+        }
+    }
     //suspend-->表示所有传入的Lambda表达式中的代码也是拥有挂起函数上下文的。
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {

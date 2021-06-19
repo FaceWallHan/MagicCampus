@@ -60,4 +60,32 @@
         android:id="@+id/dynamic_item_image_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_below="@id/dynamic_item_image_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/great"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/todo" />
+        <TextView
+            android:layout_margin="@dimen/activity_margin"
+            android:id="@+id/dynamic_item_great"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/my_dynamic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/todo" />
+        <TextView
+            android:layout_margin="@dimen/activity_margin"
+            android:id="@+id/dynamic_item_comment"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </RelativeLayout>

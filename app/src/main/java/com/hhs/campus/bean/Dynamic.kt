@@ -5,7 +5,7 @@ import java.io.Serializable
 data class DynamicImage(val path:String,var isCheck:Boolean=false):Serializable
 data class ImageShow(val path:String,var isFirst:Boolean=false):Serializable
 data class Dynamic(val id:Int=0,var content:String="",var mark:String="" ,var sId:Int=0,val  time:String=""
-,val  name:String="",val avatar:String="",val imagesList:List<ImageItem>):Serializable
+,val  name:String="",val avatar:String="",val imagesList:List<ImageItem>,val greatNum:Int=0,val commentNum:Int=0):Serializable
 data class ImageItem(val id: Int,val url:String):Serializable
 data class DynamicComment(val id: Int=0, val avatar: String="",var time: String="",var content: String="",val name:String="",var sId:Int=0,var dynamicId:Int=0)
 /**

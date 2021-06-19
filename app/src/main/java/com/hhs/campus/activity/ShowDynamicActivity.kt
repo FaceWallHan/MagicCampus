@@ -4,7 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +25,7 @@ import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.activity_show_dynamic.*
 
 class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListener ,
-    OnRemoveCommentListener, TextWatcher {
+    OnRemoveCommentListener, TextWatcher,View.OnClickListener {
     private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
     private val dialog=ShowImageDialog()
@@ -33,6 +33,8 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
     private val adapter=ShowCommentAdapter(commentList)
     private val comment=DynamicComment()
     private lateinit var  dynamic:Dynamic
+    private lateinit var  dynamicAdapter:ShowDynamicAdapter
+    private val dynamicList=ArrayList<Dynamic>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_dynamic)
@@ -55,21 +57,50 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         dynamicViewModel.releaseCommentResponse.observe(this, Observer { result->
             if (result.isSuccess){
                 dynamicViewModel.setDynamicId(comment.dynamicId)
+                dynamicViewModel.setSimpleDynamicId(dynamic.id)
                 comment_et.setText("")
             }
         })
         dynamicViewModel.removeCommentResponse.observe(this, Observer { result->
             if (result.isSuccess){
                 dynamicViewModel.setDynamicId(dynamic.id)
+                dynamicViewModel.setSimpleDynamicId(dynamic.id)
             }
-                Log.d("11111111111111", "onCreate:${dynamic.id} ")
+        })
+        dynamicViewModel.inflateGreatInfo(dynamic)
+        dynamicViewModel.greatResponse.observe(this, Observer { result->
+            if (result.isSuccess){
+                result.getOrNull()?.let {
+                    if (it.isLike()){
+                        changeGreat.setBackgroundResource(R.drawable.red_great)
+                    }else if (it.isUnLike()){
+                        changeGreat.setBackgroundResource(R.drawable.white_great)
+                    }
+                }
+            }
+        })
+        dynamicViewModel.greatStatusResponse.observe(this, Observer { result->
+            if (result.isSuccess){
+                dynamicViewModel.inflateGreatInfo(dynamic)
+                dynamicViewModel.setSimpleDynamicId(dynamic.id)
+            }
+        })
+        dynamicViewModel.simpleResponse.observe(this, Observer { result->
+            if (result.isSuccess){
+                result.getOrNull()?.data?.let {
+                    dynamic=it
+                    dynamicList.clear()
+                    dynamicList.add(dynamic)
+                    dynamicAdapter.notifyDataSetChanged()
+                }
+            }
         })
 
     }
     private fun initSome(){
         dynamic = intent?.getSerializableExtra("dynamic") as Dynamic
-        val dynamicList= listOf(dynamic)
-        val dynamicAdapter=ShowDynamicAdapter(dynamicList,this)
+         dynamicList.add(dynamic)
+        dynamicAdapter=ShowDynamicAdapter(dynamicList,this)
         dynamicAdapter.urlClickListener=this
         adapter.idListener=this
         val groupAdapter=ConcatAdapter(dynamicAdapter,adapter)
@@ -82,14 +113,8 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         //
         comment_et.addTextChangedListener(this)
         send_comment.isEnabled=false
-        send_comment.setOnClickListener {
-            val textLength=comment.content.length
-            if (textLength<2||textLength>50){
-                resources.getString(R.string.comment_hint).showToast()
-            }else{
-                dynamicViewModel.sendComment(comment)
-            }
-        }
+        send_comment.setOnClickListener (this)
+        changeGreat.setOnClickListener(this)
     }
     override fun onItemClick(url: String?) {
         url?.let {
@@ -123,4 +148,21 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         }
     }
 
+    override fun onClick(p0: View?) {
+        when(p0?.id){
+            R.id.changeGreat->dynamicViewModel.inflateGreatStatusInfo(dynamic)
+            R.id.send_comment->{
+                val textLength=comment.content.length
+                if (textLength<2||textLength>50){
+                    resources.getString(R.string.comment_hint).showToast()
+                }else{
+                    dynamicViewModel.sendComment(comment)
+                }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        finish()
+    }
 }

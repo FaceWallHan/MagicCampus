@@ -41,6 +41,9 @@ object MagicCampusNetWork {
     suspend fun getAllComment(id:Int)= dynamicService.getAllComment(id).await()
     suspend fun releaseComment(comment: DynamicComment)= dynamicService.releaseComment(comment).await()
     suspend fun removeComment(id: Int)= dynamicService.removeComment(id).await()
+    suspend fun getSimpleGreat(id: Int,dynamicId:Int)= dynamicService.getSimpleGreat(id,dynamicId).await()
+    suspend fun changeGreatStatus(id: Int,dynamicId:Int)= dynamicService.changeGreatStatus(id,dynamicId).await()
+    suspend fun querySimpleOneDynamic(dynamicId:Int)= dynamicService.querySimpleOneDynamic(dynamicId).await()
     private suspend fun <T> Call<T>.await():T{
         return suspendCoroutine { continuation ->
             enqueue(object :Callback<T>{

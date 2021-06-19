@@ -10,36 +10,48 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.activity.MyDynamicActivity
 import com.hhs.campus.activity.SendDynamicActivity
 import com.hhs.campus.adapter.ShowDynamicAdapter
+import com.hhs.campus.bean.Dynamic
 import com.hhs.campus.utils.MultiImageView
 import com.hhs.campus.viewModel.DynamicViewModel
 import kotlinx.android.synthetic.main.dynamic_layout.*
 
-class DynamicFragment:Fragment() ,View.OnClickListener, MultiImageView.OnItemClickListener{
+class DynamicFragment:Fragment() ,View.OnClickListener, MultiImageView.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener{
     private val dynamicViewModel by lazy { ViewModelProvider(requireActivity()).get(DynamicViewModel::class.java) }
+    private val list=ArrayList<Dynamic>()
+    private  lateinit var  adapter:ShowDynamicAdapter
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        send_dynamic.setOnClickListener (this)
-        my_dynamic.setOnClickListener (this)
+        initSome()
         dynamicViewModel.refreshAllDynamic()
         dynamicViewModel.allDynamicList.observe(requireActivity(), Observer { result->
             if (result.isSuccess){
                 result.getOrNull()?.let {
-                    val adapter=ShowDynamicAdapter(it.data,requireContext())
-                    adapter.urlClickListener=this
-                    val layoutManager=LinearLayoutManager(requireActivity())
-                    layoutManager.orientation=LinearLayoutManager.VERTICAL
-                    dynamic_list.adapter=adapter
-                    dynamic_list.layoutManager=layoutManager
+                    list.clear()
+                    list.addAll(it.data)
+                    adapter.notifyDataSetChanged()
                 }
             }
+            refresh_dynamic.isRefreshing=false
         })
     }
-
+    private fun initSome(){
+        send_dynamic.setOnClickListener (this)
+        my_dynamic.setOnClickListener (this)
+        adapter=ShowDynamicAdapter(list, requireActivity())
+        adapter.urlClickListener=this
+        val layoutManager=LinearLayoutManager(requireActivity())
+        layoutManager.orientation=LinearLayoutManager.VERTICAL
+        dynamic_list.adapter=adapter
+        dynamic_list.layoutManager=layoutManager
+        refresh_dynamic.setColorSchemeResources(R.color.colorPrimary)
+        refresh_dynamic.setOnRefreshListener (this)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dynamic_layout,container,false)
     }
@@ -66,5 +78,9 @@ class DynamicFragment:Fragment() ,View.OnClickListener, MultiImageView.OnItemCli
 
     override fun onItemClick(url: String?) {
 
+    }
+
+    override fun onRefresh() {
+        dynamicViewModel.refreshAllDynamic()
     }
 }

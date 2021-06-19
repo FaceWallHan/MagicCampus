@@ -1,6 +1,6 @@
 package com.hhs.campus.adapter
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hhs.campus.R
+import com.hhs.campus.activity.MyDynamicActivity
 import com.hhs.campus.activity.ShowDynamicActivity
 import com.hhs.campus.bean.Dynamic
 import com.hhs.campus.utils.MultiImageView
 import com.hhs.campus.utils.OnSelectImageItemListener
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ShowDynamicAdapter(private val list:List<Dynamic>,  private val context:Context, private val isMine:Boolean=false) :RecyclerView.Adapter<ShowDynamicAdapter.ViewHolder>(){
+class ShowDynamicAdapter(private val list:List<Dynamic>, private val activity: Activity, private val isMine:Boolean=false) :RecyclerView.Adapter<ShowDynamicAdapter.ViewHolder>(){
     lateinit var removedListener: OnSelectImageItemListener
     lateinit var urlClickListener: MultiImageView.OnItemClickListener
     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
@@ -25,16 +26,23 @@ class ShowDynamicAdapter(private val list:List<Dynamic>,  private val context:Co
         val name: TextView =itemView.findViewById(R.id.dynamic_item_name)
         val remove: ImageView =itemView.findViewById(R.id.dynamic_item_remove)
         val time: TextView =itemView.findViewById(R.id.dynamic_item_time)
+        val great: TextView =itemView.findViewById(R.id.dynamic_item_great)
+        val comment: TextView =itemView.findViewById(R.id.dynamic_item_comment)
         val imageList: MultiImageView =itemView.findViewById(R.id.dynamic_item_image_list)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view=LayoutInflater.from(context).inflate(R.layout.dynamic_item,parent,false)
+        val view=LayoutInflater.from(activity).inflate(R.layout.dynamic_item,parent,false)
         val holder=ViewHolder(view)
-        view.setOnClickListener {
-            val intent=Intent(context,ShowDynamicActivity::class.java)
-            intent.putExtra("dynamic",list[holder.adapterPosition])
-            context.startActivity(intent)
+        if (list.size>1||isMine){
+            view.setOnClickListener {
+                val intent=Intent(activity,ShowDynamicActivity::class.java)
+                intent.putExtra("dynamic",list[holder.adapterPosition])
+                activity.startActivity(intent)
+                if (activity is MyDynamicActivity){
+                    activity.finish()
+                }
+            }
         }
         holder.remove.setOnClickListener {
             removedListener.onItemClicked(list[holder.adapterPosition].id,false)
@@ -52,12 +60,15 @@ class ShowDynamicAdapter(private val list:List<Dynamic>,  private val context:Co
         val dynamic = list[position]
         holder.content.text=dynamic.content
         holder.name.text=dynamic.name
-        Glide.with(context).load(dynamic.avatar).into(holder.head)
+        Glide.with(activity).load(dynamic.avatar).into(holder.head)
             val multipleList=ArrayList<String>()
             for (item in dynamic.imagesList) {
                 multipleList.add(item.url)
             }
         holder.imageList.setList(multipleList)
+        holder.time.text=dynamic.time
+        holder.comment.text= dynamic.commentNum.toString()
+        holder.great.text= dynamic.greatNum.toString()
         holder.time.text=dynamic.time
         if (isMine){
             holder.remove.visibility=View.VISIBLE

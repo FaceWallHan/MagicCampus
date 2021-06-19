@@ -73,4 +73,28 @@ class DynamicViewModel:ViewModel() {
     fun removeComment(id: Int){
         removeCommentLiveData.value=id
     }
+    //是否点赞
+    private val greatInfoLiveData=MutableLiveData<Dynamic>()
+    val greatResponse=Transformations.switchMap(greatInfoLiveData){result->
+        Repository.getSimpleGreat(result.sId,result.id)
+    }
+    fun inflateGreatInfo(dynamic: Dynamic){
+        greatInfoLiveData.value=dynamic
+    }
+    //点赞/取消点赞
+    private val greatStatusLiveData=MutableLiveData<Dynamic>()
+    val greatStatusResponse=Transformations.switchMap(greatStatusLiveData){result->
+        Repository.changeGreatStatus(result.sId,result.id)
+    }
+    fun inflateGreatStatusInfo(dynamic: Dynamic){
+        greatStatusLiveData.value=dynamic
+    }
+    //获取单个动态根据dynamicId
+    private val simpleDynamicLiveData=MutableLiveData<Int>()
+    val simpleResponse=Transformations.switchMap(simpleDynamicLiveData){result->
+        Repository.querySimpleOneDynamic(result)
+    }
+    fun setSimpleDynamicId(dynamicId:Int){
+        simpleDynamicLiveData.value=dynamicId
+    }
 }
