@@ -13,10 +13,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.bean.Repair
+import com.hhs.campus.databinding.ActivityWantRepairBinding
 import com.hhs.campus.dialog.SelectImageDialog
 import com.hhs.campus.dialog.SelectRepairDialog
 import com.hhs.campus.utils.FileUtil
@@ -43,19 +45,11 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_want_repair)
+        val binding=DataBindingUtil.setContentView<ActivityWantRepairBinding>(this,R.layout.activity_want_repair)
         setSupportActionBar(want_repair)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val serializableExtra = intent?.getSerializableExtra(AppClient.repair)
-        serializableExtra?.let {
-            repair=it as Repair
-            choose_area.setText(it.repairArea)
-            choose_area.isEnabled=false
-            repair_address.setText(it.address)
-            repair_address.isEnabled=false
-            choose_project.setText(it.repairProject)
-            choose_project.isEnabled=false
-        }
+        serializableExtra?.let { repair=it as Repair }
         progressDialog=ProgressDialog(this)
         progressDialog.setTitle("loading")
         progressDialog.setCancelable(false)
@@ -72,8 +66,9 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
         studentViewModel.studentLocalLiveData.observe(this, androidx.lifecycle.Observer { result->
             if (result.isSuccess){
                 result.getOrNull()?.let {
-                    repair_phone.setText(it.phone)
+                    repair.phone=it.phone
                     repair.s_id=it.id.toString()
+                    binding.repair=repair
                 }
             }
         })
@@ -101,23 +96,15 @@ class WantRepairActivity : AppCompatActivity(),View.OnClickListener ,OnAddPictur
             .show()
     }
     private fun checkRepairInfo(){
-        repair.address=repair_address.text.toString()
-        repair.date=choose_reserve_date.text.toString()
-        repair.phone=repair_phone.text.toString()
-        repair.repairArea=choose_area.text.toString()
-        repair.repairProject=choose_project.text.toString()
-        repair.time=choose_reserve_time.text.toString()
-        val repairContent=input_repair_content.text.toString()
-        if (repairContent.length<2||repairContent.length>50){
+        if (repair.content.length<2||repair.content.length>50){
             "报修内容限制为2~50字".showToast()
             return
         }
-        repair.content=input_repair_content.text.toString()
         if(repair.isNull()){
             "报修区域，报修地址，报修项目,报修内容不能为空!".showToast()
             return
         }
-        if (repair.worker==""){
+        if (repair.worker.isEmpty()){
             //普通报修
             repairViewModel.sendRepairForm(repair)
             repairViewModel.repairForm.observe(this, androidx.lifecycle.Observer { result->

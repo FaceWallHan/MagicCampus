@@ -39,7 +39,7 @@ class SendDynamicActivity : AppCompatActivity() ,TextWatcher,OnSelectImageItemLi
     private lateinit var submitItem:MenuItem
     private val imageList=ArrayList<ImageShow>()
     private val adapter=ShowImageAdapter(imageList,this)
-    private val dynamic=Dynamic(imagesList = mutableListOf())
+    private val dynamic=Dynamic()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_dynamic)

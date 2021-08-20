@@ -1,91 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/dynamic_border"
-    android:layout_margin="@dimen/activity_margin"
-    android:padding="@dimen/activity_margin">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/dynamic_item_head"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/todo" />
-    <LinearLayout
-        android:layout_marginStart="@dimen/activity_margin"
-        android:layout_toEndOf="@id/dynamic_item_head"
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="adapter"
+            type="com.hhs.campus.adapter.ShowDynamicAdapter" />
+        <variable
+            name="dynamic"
+            type="com.hhs.campus.bean.Dynamic" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@drawable/dynamic_border"
+        android:layout_margin="@dimen/activity_margin"
+        android:padding="@dimen/activity_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            loadUrl="@{dynamic.avatar}"
+            android:id="@+id/dynamic_item_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/todo" />
+
         <LinearLayout
+            android:layout_marginStart="@dimen/activity_margin"
+            android:layout_toEndOf="@id/dynamic_item_head"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
-            <TextView
-                android:textStyle="bold"
-                android:id="@+id/dynamic_item_name"
-                android:gravity="center_vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                tools:ignore="NestedWeights" />
-            <ImageView
-                android:visibility="invisible"
-                android:id="@+id/dynamic_item_remove"
-                android:src="@drawable/remove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/todo" />
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:text="@{dynamic.name}"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:ignore="NestedWeights" />
+
+                <ImageView
+                    android:visibility="@{adapter.mine ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/dynamic_item_remove"
+                    android:src="@drawable/remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/todo" />
+            </LinearLayout>
+
+            <TextView
+                android:text="@{dynamic.time}"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
+
         <TextView
-            android:id="@+id/dynamic_item_time"
+            android:text="@{dynamic.content}"
+            android:layout_margin="@dimen/activity_margin"
+            android:layout_below="@id/dynamic_item_head"
+            android:id="@+id/dynamic_item_content"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <TextView
-        android:layout_margin="@dimen/activity_margin"
-        android:layout_below="@id/dynamic_item_head"
-        android:id="@+id/dynamic_item_content"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       />
-    <com.hhs.campus.utils.MultiImageView
-        android:layout_below="@id/dynamic_item_content"
-        android:id="@+id/dynamic_item_image_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:layout_below="@id/dynamic_item_image_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:src="@drawable/great"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:contentDescription="@string/todo" />
-        <TextView
-            android:layout_margin="@dimen/activity_margin"
-            android:id="@+id/dynamic_item_great"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-        <ImageView
-            android:src="@drawable/my_dynamic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:contentDescription="@string/todo" />
-        <TextView
-            android:layout_margin="@dimen/activity_margin"
-            android:id="@+id/dynamic_item_comment"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_height="wrap_content" />
+
+        <com.hhs.campus.utils.MultiImageView
+            android:layout_below="@id/dynamic_item_content"
+            android:id="@+id/dynamic_item_image_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_below="@id/dynamic_item_image_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/great"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/todo" />
+
+            <TextView
+                android:layout_margin="@dimen/activity_margin"
+                android:text="@{String.valueOf(dynamic.greatNum)}"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:src="@drawable/my_dynamic"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/todo" />
+
+            <TextView
+                android:text="@{String.valueOf(dynamic.commentNum)}"
+                android:layout_margin="@dimen/activity_margin"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

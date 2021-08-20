@@ -40,6 +40,7 @@
     <string name="photograph">拍照</string>
     <string name="empty_info">暂无数据</string>
     <string name="repair_feedback">维修评价</string>
+    <string name="go_appraise">去评价</string>
     <string-array name="time_array">
         <item>08:00–10:00</item>
         <item>10:00–12:00</item>
@@ -58,4 +59,9 @@
     <string name="magic_student_id">学号</string>
     <string name="magis_password">密码</string>
     <string name="registered">注册</string>
+    <string name="accept">管理员%1$s已受理此维修订单</string>
+    <string name="dispatch">管理员指派维修工%1$s承修，维修工联系电话：%2$s</string>
+    <string name="sign">%1$s签到，维修工联系电话：%2$s</string>
+    <string name="completed">维修工%1$s维修完工</string>
+    <string name="evaluated">用户%1$s给出了评价，评价结果为%2$s分"</string>
 </resources>

@@ -1,270 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.WantRepairActivity"
-    android:focusableInTouchMode="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/want_repair"
+    <data>
+        <variable
+            name="repair"
+            type="com.hhs.campus.bean.Repair" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/guideline11"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".activity.WantRepairActivity"
+        android:focusableInTouchMode="true">
 
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/repair_space"
-        app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline11" />
-    <EditText
-        android:focusable="false"
-        android:id="@+id/choose_area"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:drawableEnd="@drawable/right"
-        android:hint="@string/choose_repair_space"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline11" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/repair_address"
-        app:layout_constraintBottom_toTopOf="@+id/guideline15"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline13" />
-    <EditText
-       android:id="@+id/repair_address"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/input_repair_address"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guideline15"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline13" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/repair_project"
-        app:layout_constraintBottom_toTopOf="@+id/guideline16"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline15" />
-    <EditText
-        android:focusable="false"
-        android:drawableEnd="@drawable/right"
-        android:id="@+id/choose_project"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/choose_repair_project"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guideline16"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline15" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/phone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline16" />
-    <EditText
-        android:id="@+id/repair_phone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/phone"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline16" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/repair_image"
-        app:layout_constraintBottom_toTopOf="@+id/guideline18"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline17" />
-    <ImageButton
-        android:scaleType="centerInside"
-        android:id="@+id/choose_repair_image"
-        android:src="@drawable/photo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline18"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline17"
-        android:contentDescription="@string/todo" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/reserve_date"
-        app:layout_constraintBottom_toTopOf="@+id/guideline21"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline18" />
-    <EditText
-        android:focusable="false"
-        android:drawableEnd="@drawable/right"
-        android:id="@+id/choose_reserve_date"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/choose_reserve_date"
-        app:layout_constraintBottom_toTopOf="@+id/guideline21"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline18"
-        android:inputType="date" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/reserve_time"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline21" />
-    <EditText
-        android:focusable="false"
-        android:drawableEnd="@drawable/right"
-        android:id="@+id/choose_reserve_time"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/choose_reserve_time"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline21"
-        android:inputType="time" />
-    <TextView
-        android:textSize="@dimen/mainTextSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
-        android:text="@string/repair_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline19"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/guideline12"
-        app:layout_constraintTop_toBottomOf="@id/guideline20" />
-    <EditText
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/want_repair"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/guideline11"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        android:maxLength="50"
-        android:textSize="@dimen/mainTextSize"
-        android:id="@+id/input_repair_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autofillHints=""
-        android:hint="@string/input_repair_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline19"
-        app:layout_constraintLeft_toLeftOf="@id/guideline12"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline20"
-        android:inputType="text" />
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/repair_space"
+            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline11" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.19" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.37" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.46" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.64" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.73" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.91" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.82" />
-    <Button
-        android:id="@+id/submit_repair"
-        android:text="@string/submit"
-        android:background="@color/colorPrimary"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline19"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:enabled="@{repair.isCodeNull()}"
+            android:text="@={repair.repairArea}"
+            android:focusable="false"
+            android:id="@+id/choose_area"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:drawableEnd="@drawable/right"
+            android:hint="@string/choose_repair_space"
+            android:inputType="phone"
+            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline11" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/repair_address"
+            app:layout_constraintBottom_toTopOf="@+id/guideline15"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline13" />
+
+        <EditText
+            android:enabled="@{repair.isCodeNull()}"
+            android:id="@+id/repair_address"
+            android:text="@={repair.address}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/input_repair_address"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/guideline15"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline13" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/repair_project"
+            app:layout_constraintBottom_toTopOf="@+id/guideline16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline15" />
+
+        <EditText
+            android:enabled="@{repair.isCodeNull()}"
+            android:text="@={repair.repairProject}"
+            android:focusable="false"
+            android:drawableEnd="@drawable/right"
+            android:id="@+id/choose_project"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/choose_repair_project"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/guideline16"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline15" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/phone"
+            app:layout_constraintBottom_toTopOf="@+id/guideline17"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline16" />
+
+        <EditText
+            android:text="@={repair.phone}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/phone"
+            android:inputType="phone"
+            app:layout_constraintBottom_toTopOf="@+id/guideline17"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline16" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/repair_image"
+            app:layout_constraintBottom_toTopOf="@+id/guideline18"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline17" />
+
+        <ImageButton
+            android:scaleType="centerInside"
+            android:id="@+id/choose_repair_image"
+            android:src="@drawable/photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline18"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline17"
+            android:contentDescription="@string/todo" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/reserve_date"
+            app:layout_constraintBottom_toTopOf="@+id/guideline21"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline18" />
+
+        <EditText
+            android:text="@={repair.date}"
+            android:focusable="false"
+            android:drawableEnd="@drawable/right"
+            android:id="@+id/choose_reserve_date"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/choose_reserve_date"
+            app:layout_constraintBottom_toTopOf="@+id/guideline21"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline18"
+            android:inputType="date" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/reserve_time"
+            app:layout_constraintBottom_toTopOf="@+id/guideline20"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline21" />
+
+        <EditText
+            android:text="@={repair.time}"
+            android:focusable="false"
+            android:drawableEnd="@drawable/right"
+            android:id="@+id/choose_reserve_time"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/choose_reserve_time"
+            app:layout_constraintBottom_toTopOf="@+id/guideline20"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline21"
+            android:inputType="time" />
+
+        <TextView
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="@string/repair_content"
+            app:layout_constraintBottom_toTopOf="@+id/guideline19"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline12"
+            app:layout_constraintTop_toBottomOf="@id/guideline20" />
+
+        <EditText
+            android:text="@={repair.content}"
+            android:maxLength="50"
+            android:textSize="@dimen/mainTextSize"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:hint="@string/input_repair_content"
+            app:layout_constraintBottom_toTopOf="@+id/guideline19"
+            app:layout_constraintLeft_toLeftOf="@id/guideline12"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline20"
+            android:inputType="text" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.19" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.37" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.46" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.64" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.73" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.91" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.82" />
+
+        <Button
+            android:id="@+id/submit_repair"
+            android:text="@string/submit"
+            android:background="@color/colorPrimary"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline19" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

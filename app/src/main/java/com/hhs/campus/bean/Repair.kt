@@ -14,6 +14,14 @@ data class Repair(var s_id:String="",
                   var appraise:String="",var id:Int=-1,var worker:String="",var deviceId:Int=-1):Serializable{
     fun isNull()=(address==""||repairArea==""||repairProject==""||content=="")
     fun isCodeNull()=(repairArea==""||repairProject==""||address==""||worker==""||deviceId==-1)
+    fun getRealAppraiseCount():String{
+        return if (appraise==""){
+            appraise
+        }else{
+            appraise+"分"
+        }
+    }
+    fun getRealAppraiseSchedule()=(schedule=="已完工")
 }
 data class RepairRecord(val name:String="",val time:String="",val status:String="",val phone:String="")
 data class RepairAppraise(

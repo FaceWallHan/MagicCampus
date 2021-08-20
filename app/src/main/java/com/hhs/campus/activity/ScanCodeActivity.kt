@@ -49,7 +49,6 @@ class ScanCodeActivity : AppCompatActivity(),QRCodeView.Delegate {
         val  vibrator=getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(300)
         zbar_view.startSpot()
-        result?.showToast()
         Gson().fromJson(result, Repair::class.java)?.let {
             val intent= Intent(this,WantRepairActivity::class.java)
             intent.putExtra(AppClient.repair,it)

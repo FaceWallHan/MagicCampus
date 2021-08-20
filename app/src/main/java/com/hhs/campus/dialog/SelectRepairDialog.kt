@@ -1,8 +1,6 @@
 package com.hhs.campus.dialog
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.R
+import com.hhs.campus.utils.OtherUtils
 import com.hhs.campus.viewModel.RepairViewModel
 import kotlinx.android.synthetic.main.select_repair_layout.*
 
@@ -92,24 +91,19 @@ class SelectRepairDialog :DialogFragment(),View.OnClickListener ,AdapterView.OnI
         child_spinner.adapter=childAdapter
     }
     private fun  chooseType(){
-        val repairSome=group_spinner.selectedItem.toString()+"-"+child_spinner.selectedItem.toString()
+        val child=child_spinner.selectedItem.toString()
+        val repairSome=group_spinner.selectedItem.toString()+"-"+child
         if (isProject){
-            repairViewModel.setSelectProjectRepair(child_spinner.selectedItem.toString())
+            repairViewModel.setSelectProjectRepair(child)
         }else{
             repairViewModel.setSelectAreaRepair(repairSome)
         }
     }
     override fun onStart() {
         super.onStart()
-        val dw = dialog?.window
-        dw!!.setBackgroundDrawableResource(R.color.colorPrimary) //一定要设置背景
-        val dm = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(dm)
-        val params = dw.attributes
-        //屏幕底部显示
-        params.gravity = Gravity.CENTER
-        params.width = dm.widthPixels //屏幕宽度
-        params.height = dm.heightPixels / 5 //屏幕高度的1/3
-        dw.attributes = params
+        OtherUtils.siteDialog(dialog,activity){params,dm->
+            params.width = dm.widthPixels
+            params.height = dm.heightPixels / 5
+        }
     }
 }

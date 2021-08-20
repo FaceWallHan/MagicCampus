@@ -52,5 +52,4 @@ object ImageUtil {
         .setPositiveButton("确定",positiveListener)
         .setNegativeButton("取消",negativeListener)
         .show()
-
 }

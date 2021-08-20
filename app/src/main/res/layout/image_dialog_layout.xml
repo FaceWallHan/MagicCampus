@@ -14,8 +14,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:text="@string/album_selection"
-        android:textColor="#f9f9f9"
-        android:textSize="20sp" />
+        android:textColor="#f9f9f9"/>
 
     <Button
         android:id="@+id/photograph"
@@ -25,8 +24,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:text="@string/photograph"
-        android:textColor="#f9f9f9"
-        android:textSize="20sp" />
+        android:textColor="#f9f9f9"/>
 
 
 
