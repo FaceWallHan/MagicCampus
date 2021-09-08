@@ -15,14 +15,17 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import com.hhs.campus.R
 import com.hhs.campus.utils.OnAddPictureListener
+import com.hhs.campus.utils.OtherUtils
 import kotlinx.android.synthetic.main.image_dialog_layout.*
 import java.io.File
 
 class SelectImageDialog : DialogFragment() ,View.OnClickListener{
     private val takePhoto=1
+    private val fromAlbum=2
+    private val requestPhoto=3
+    private val requestAlbum=4
     private lateinit var imageUri: Uri
     private lateinit var outputImage: File
-    private val fromAlbum=2
     lateinit var addPictureListener:OnAddPictureListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +57,7 @@ class SelectImageDialog : DialogFragment() ,View.OnClickListener{
             R.id.photograph->takePhoto()
         }
     }
-    private fun  choosePhoto(){
-        if (ContextCompat.checkSelfPermission(requireActivity(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE), 1) }
-        }
+    private fun operateAlbum(){
         //打开文件选择器
         val intent=Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -66,11 +65,17 @@ class SelectImageDialog : DialogFragment() ,View.OnClickListener{
         intent.type="image/*"
         startActivityForResult(intent,fromAlbum)
     }
-    private fun  takePhoto(){
+    private fun  choosePhoto(){
         if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE), 1) }
+            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE), requestPhoto) }
+        }else{
+            operateAlbum()
         }
+
+    }
+    private fun operatePhoto(){
         //创建file对象，用于存储拍照后的照片
         outputImage=File(activity?.externalCacheDir,"output_image.jpg")
         if (outputImage.exists()){
@@ -86,6 +91,27 @@ class SelectImageDialog : DialogFragment() ,View.OnClickListener{
         val intent= Intent("android.media.action.IMAGE_CAPTURE")
         intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri)
         startActivityForResult(intent,takePhoto)
+    }
+    private fun  takePhoto(){
+        if (ContextCompat.checkSelfPermission(requireActivity(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA), requestAlbum) }
+        }else{
+            operatePhoto()
+        }
+
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            requestPhoto->{
+                OtherUtils.judgePermissionsResult(grantResults){operatePhoto()}
+            }
+            requestAlbum->{
+                OtherUtils.judgePermissionsResult(grantResults){operateAlbum()}
+            }
+        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

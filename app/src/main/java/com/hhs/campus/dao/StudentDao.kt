@@ -8,6 +8,7 @@ import com.hhs.campus.bean.Student
 
 
 object StudentDao {
+    private val defaultStudent=Gson().toJson(Student())
     private const val selfKey="student"
     @SuppressLint("CommitPrefEdits")
     fun saveStudent(student: Student): Boolean {
@@ -17,7 +18,7 @@ object StudentDao {
     }
     fun  getSaveStudent(): Student {
         val studentJson= sharedPreferences()
-            .getString(selfKey,"")
+            .getString(selfKey,defaultStudent)
         return Gson().fromJson(studentJson, Student::class.java)
     }
     fun  isStudentSaved()= sharedPreferences().contains(selfKey)

@@ -12,7 +12,7 @@
     <string name="repair">报修</string>
     <string name="eat">点餐</string>
     <string name="dynamic">动态</string>
-    <string name="more">更多</string>
+    <string name="mine">我的</string>
     <string name="announcement">新闻公告</string>
     <string name="wantRepair">我要报修</string>
     <string name="waitRepair">等待维修</string>
@@ -64,4 +64,5 @@
     <string name="sign">%1$s签到，维修工联系电话：%2$s</string>
     <string name="completed">维修工%1$s维修完工</string>
     <string name="evaluated">用户%1$s给出了评价，评价结果为%2$s分"</string>
+    <string name="net_change">网络不给力，请检查网络设置</string>
 </resources>

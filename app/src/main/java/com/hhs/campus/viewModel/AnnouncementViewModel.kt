@@ -1,17 +1,25 @@
 package com.hhs.campus.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hhs.campus.Repository
-import com.hhs.campus.bean.Student
+import com.hhs.campus.bean.Announcement
+import com.hhs.campus.net.ServiceCreator
+import kotlinx.coroutines.flow.collect
 
 class AnnouncementViewModel:ViewModel() {
-    private val idLiveData=MutableLiveData<Student>()
-    val listLiveDate=Transformations.switchMap(idLiveData){
-        Repository.getSomeAnnouncement()
+    val listLiveData= MutableLiveData<List<Announcement>>()
+    fun  requestSomeAnnouncement(){
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getSomeAnnouncement().collect {
+                if (it.isSuccess()){
+                    listLiveData.value=it.data
+                }
+            }
+        }
     }
-    fun setStudentId(){
-        idLiveData.value= idLiveData.value
-    }
+
+
+
 }

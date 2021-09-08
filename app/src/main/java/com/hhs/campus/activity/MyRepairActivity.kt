@@ -21,11 +21,8 @@ class MyRepairActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_repair)
         setSupportActionBar(show_repair_detail)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val repair = intent?.getSerializableExtra(AppClient.repairId) as Repair
-        repair.let {
-            viewModel.setRepairId(it)
-        }
+        repair.let { viewModel.setRepairId(it) }
         val list= mutableListOf(RepairDetailsFragment(),RepairRecordFragment())
         val pagerAdapter= FragmentAdapter(this, list)
         repair_pager.adapter=pagerAdapter

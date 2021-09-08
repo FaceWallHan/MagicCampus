@@ -1,20 +1,23 @@
 package com.hhs.campus.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hhs.campus.Repository
-import com.hhs.campus.bean.Repair
-import com.hhs.campus.bean.RepairAppraise
+import com.hhs.campus.bean.*
+import com.hhs.campus.net.ServiceCreator
+import com.hhs.campus.utils.DetermineResponse
+import com.hhs.campus.utils.MagicResponse
+import kotlinx.coroutines.flow.collect
 import okhttp3.MultipartBody
 
 class RepairViewModel:ViewModel() {
-    private val imageLiveData=MutableLiveData<MultipartBody.Part>()
-    val imageUrl=Transformations.switchMap(imageLiveData){query->
-        Repository.uploadFile(query)
-    }
+    //上传报修项目
+    val imageLiveData=MutableLiveData<MagicResponse<ImageResponse>>()
     fun uploadFile(part: MultipartBody.Part){
-        imageLiveData.value=part
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.uploadFile(part).collect { imageLiveData.value=it }
+        }
     }
     //将dialogFragment选中的报修项目值传递给activity
     val selectProjectLiveData=MutableLiveData<String>()
@@ -27,60 +30,46 @@ class RepairViewModel:ViewModel() {
         selectAreaLiveData.value=item
     }
     //选择维修项目
-    private val repairProjectLiveData=MutableLiveData<Any?>()
-    val projectList=Transformations.switchMap(repairProjectLiveData){
-        Repository.getRepairProject()
-    }
+    val repairProjectLiveData=MutableLiveData<List<RepairProject>>()
     fun refreshSelfProject(){
-        repairProjectLiveData.value=repairProjectLiveData.value
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getRepairProject().collect { repairProjectLiveData.value=it.data }
+        }
     }
     //选择维修区域
-    private val repairAreaLiveData=MutableLiveData<Any?>()
-    val areaList=Transformations.switchMap(repairAreaLiveData){
-        Repository.getRepairArea()
-    }
+    val repairAreaLiveData=MutableLiveData<List<RepairArea>>()
     fun refreshSelfArea(){
-        repairAreaLiveData.value=repairAreaLiveData.value
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getRepairArea().collect { repairAreaLiveData.value=it.data }
+        }
     }
     //发送维修订单
-    private val repairFormLiveData=MutableLiveData<Repair>()
-    val repairForm=Transformations.switchMap(repairFormLiveData){result->
-        Repository.sendRepairForm(result)
-    }
+    val repairFormLiveData=MutableLiveData<DetermineResponse>()
     fun sendRepairForm(repair: Repair){
-        repairFormLiveData.value=repair
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.sendRepairForm(repair).collect { repairFormLiveData.value=it }
+        }
     }
     //获取全部维修记录
-    private val repairAllListLiveData=MutableLiveData<Int>()
-    val allRepairList=Transformations.switchMap(repairAllListLiveData){result->
-        Repository.getAllRepairList(result)
-    }
+    val repairAllListLiveData=MutableLiveData<List<Repair>>()
     fun getAllRepairList(id:Int){
-        repairAllListLiveData.value=id
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getAllRepairList(id).collect { repairAllListLiveData.value=it.data }
+        }
     }
     //获取某个订单的维修记录
-    private val repairRecordLiveData=MutableLiveData<String>()
-    val repairRecord=Transformations.switchMap(repairRecordLiveData){result->
-        Repository.getRecordByRepairId(result)
-    }
+    val repairRecordLiveData=MutableLiveData<List<RepairRecord>>()
     fun getRecordByRepairId(repairId:String){
-        repairRecordLiveData.value=repairId
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getRecordByRepairId(repairId).collect { repairRecordLiveData.value=it.data }
+        }
     }
     //发送评价描述
-    private val appraiseLiveData=MutableLiveData<RepairAppraise>()
-    val repairAppraise=Transformations.switchMap(appraiseLiveData){result->
-        Repository.submitAppraise(result)
-    }
+    val appraiseLiveData=MutableLiveData<DetermineResponse>()
     fun submitAppraise(appraise: RepairAppraise){
-        appraiseLiveData.value=appraise
-    }
-    //扫码发送维修订单
-    private val repairFormCodeLiveData=MutableLiveData<Repair>()
-    val repairFormCode=Transformations.switchMap(repairFormCodeLiveData){result->
-        Repository.sendRepairFormByCode(result)
-    }
-    fun sendRepairFormCode(repair: Repair){
-        repairFormCodeLiveData.value=repair
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.submitAppraise(appraise).collect { appraiseLiveData.value=it }
+        }
     }
     //将dialogFragment选中的报修项目值传递给activity
     val repairLiveData=MutableLiveData<Repair>()

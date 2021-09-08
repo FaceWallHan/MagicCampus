@@ -8,7 +8,6 @@ import com.hhs.campus.bean.Student
 import com.hhs.campus.utils.DetermineResponse
 import com.hhs.campus.utils.MagicResponse
 import okhttp3.MultipartBody
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -16,12 +15,12 @@ import retrofit2.http.Part
 
 interface StudentService {
     @POST("postStudentLogin.do")
-    fun login(@Body login: Login):Call<MagicResponse<Student>>
+    suspend fun login(@Body login: Login):MagicResponse<Student>
 
     @Multipart
     @POST("updateStuHeaderServer.do")
-    fun uploadFile(@Part part: MultipartBody.Part ):Call<MagicResponse<ImageResponse>>
+    suspend fun uploadFile(@Part part: MultipartBody.Part ):MagicResponse<ImageResponse>
 
     @POST("uploadStuHeaderDatabase.do")
-    fun updateHeader(@Body imageHeader: ImageHeader):Call<DetermineResponse>
+    suspend fun updateHeader(@Body imageHeader: ImageHeader):DetermineResponse
 }

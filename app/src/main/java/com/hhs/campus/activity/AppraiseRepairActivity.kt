@@ -27,22 +27,17 @@ class AppraiseRepairActivity : AppCompatActivity() ,View.OnClickListener, Rating
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_appraise)
         setSupportActionBar(binding.appraiseRepair)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         appraise.repairId=intent.getIntExtra(AppClient.repairId,0)
         studentViewModel.refreshSelfInquire()
-        studentViewModel.studentLocalLiveData.observe(this, Observer { result->
-            if (result.isSuccess){
-                result.getOrNull()?.let {
-                    appraise.studentId=it.id
-                    appraise.studentName=it.name
-                }
-            }
+        studentViewModel.inquireLiveData.observe(this, Observer {
+            appraise.studentId=it.id
+            appraise.studentName=it.name
         })
         binding.repairRating.onRatingBarChangeListener = this
         binding.submitRepairAppraise.setOnClickListener (this)
 
-        repairViewModel.repairAppraise.observe(this, Observer { result->
-            if (result.isSuccess){
+        repairViewModel.appraiseLiveData.observe(this, Observer { result->
+            if (result.isSuccess()){
                 "评价成功".showToast()
                 val intent= Intent()
                 setResult(Activity.RESULT_OK,intent)

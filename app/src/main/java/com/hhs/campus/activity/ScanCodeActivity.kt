@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.bean.Repair
+import com.hhs.campus.utils.OtherUtils
 import com.hhs.campus.utils.showToast
 import kotlinx.android.synthetic.main.activity_scan_code.*
 
@@ -50,10 +51,14 @@ class ScanCodeActivity : AppCompatActivity(),QRCodeView.Delegate {
         vibrator.vibrate(300)
         zbar_view.startSpot()
         Gson().fromJson(result, Repair::class.java)?.let {
-            val intent= Intent(this,WantRepairActivity::class.java)
-            intent.putExtra(AppClient.repair,it)
-            startActivity(intent)
-            finish()
+            if (it.isCodeNull()){
+                "请扫描正确的二维码".showToast()
+            }else{
+                val intent= Intent(this,WantRepairActivity::class.java)
+                intent.putExtra(AppClient.repair,it)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
@@ -68,13 +73,7 @@ class ScanCodeActivity : AppCompatActivity(),QRCodeView.Delegate {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
-            permission ->{
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    zbar_view.startSpotAndShowRect()
-                } else {
-                    "申请相机权限被拒绝".showToast()
-                }
-            }
+            permission -> OtherUtils.judgePermissionsResult(grantResults){zbar_view.startSpotAndShowRect()}
         }
     }
 }

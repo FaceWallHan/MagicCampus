@@ -27,26 +27,19 @@ class ShowRepairActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_repair)
         setSupportActionBar(show_repair_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         init()
         studentViewModel.refreshSelfInquire()
-        studentViewModel.studentLocalLiveData.observe(this, Observer { result->
-            if (result.isSuccess){
-                result.getOrNull()?.id?.let {
+        studentViewModel.inquireLiveData.observe(this, Observer { result->
+                result?.id?.let {
                     repairViewModel.getAllRepairList(it)
                     studentId=it
-                }
             }
         })
 
-        repairViewModel.allRepairList.observe(this, Observer { result->
-            if (result.isSuccess){
-                result.getOrNull()?.let {
+        repairViewModel.repairAllListLiveData.observe(this, Observer {
                     list.clear()
-                    list.addAll(it.data)
+                    list.addAll(it)
                     adapter.notifyDataSetChanged()
-                }
-            }
         })
     }
     private fun init(){

@@ -14,7 +14,6 @@ class AnnouncementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding=DataBindingUtil.setContentView<ActivityAnnouncementBinding>(this,R.layout.activity_announcement)
         setSupportActionBar(binding.showAnnouncement)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = null
         val serializable = intent.getSerializableExtra(AnnouncementAdapter.ANNOUNCEMENT_ITEM) as Announcement
         binding.announcement=serializable

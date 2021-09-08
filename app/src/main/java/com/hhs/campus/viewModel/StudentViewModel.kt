@@ -1,52 +1,55 @@
 package com.hhs.campus.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hhs.campus.Repository
 import com.hhs.campus.bean.ImageHeader
+import com.hhs.campus.bean.ImageResponse
 import com.hhs.campus.bean.Login
 import com.hhs.campus.bean.Student
+import com.hhs.campus.net.ServiceCreator
+import com.hhs.campus.utils.DetermineResponse
+import com.hhs.campus.utils.MagicResponse
+import kotlinx.coroutines.flow.collect
 import okhttp3.MultipartBody
 
 class StudentViewModel:ViewModel() {
-    private val loginLiveData=MutableLiveData<Login>()
-    val studentLiveData=Transformations.switchMap(loginLiveData){query->
-        Repository.loginStudent(query)
+    //登录
+    val loginLiveData=MutableLiveData<MagicResponse<Student>>()
+    fun login(login: Login){
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.loginStudent(login).collect { loginLiveData.value=it }
+        }
     }
-    fun login(id:String ,password:String){
-        loginLiveData.value= Login(id, password)
-    }
-    //
-    private val saveLiveData=MutableLiveData<Student>()
-    val saveLocalLiveData=Transformations.switchMap(saveLiveData){query->
-        Repository.saveStudent(query)
-    }
+    //保存个人信息
+    val saveLiveData=MutableLiveData<Boolean>()
     fun  saveStudent(student: Student){
-        saveLiveData.value=student
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.saveStudent(student).collect { saveLiveData.value=it }
+        }
     }
-    //
-    private val inquireLiveData=MutableLiveData<Student>()
-    val studentLocalLiveData=Transformations.switchMap(inquireLiveData){
-        Repository.getSaveStudent()
-    }
+    //获取本地学生信息
+    val inquireLiveData=MutableLiveData<Student>()
     fun  refreshSelfInquire(){
-        inquireLiveData.value=inquireLiveData.value
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getSaveStudent().collect {
+                inquireLiveData.value=it
+            }
+        }
     }
     //发送头像
-    private val imageLiveData=MutableLiveData<MultipartBody.Part>()
-    val imageUrl=Transformations.switchMap(imageLiveData){query->
-        Repository.uploadHeaderFile(query)
-    }
+    val imageLiveData=MutableLiveData<MagicResponse<ImageResponse>>()
     fun uploadFile(part: MultipartBody.Part){
-        imageLiveData.postValue(part)
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.uploadHeaderFile(part).collect { imageLiveData.value=it }
+        }
     }
     //更改学生头像
-    private val headLiveData=MutableLiveData<ImageHeader>()
-    val headResponse=Transformations.switchMap(headLiveData){result->
-        Repository.updateHeader(result)
-    }
+    val headLiveData=MutableLiveData<DetermineResponse>()
     fun updateHead(imageHeader: ImageHeader){
-        headLiveData.value=imageHeader
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.updateHeader(imageHeader).collect { headLiveData.value=it }
+        }
     }
 }
