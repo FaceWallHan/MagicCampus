@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.adapter.ShowCommentAdapter
 import com.hhs.campus.adapter.ShowDynamicAdapter
@@ -23,6 +24,7 @@ import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.DynamicViewModel
 import com.hhs.campus.viewModel.StudentViewModel
 import kotlinx.android.synthetic.main.activity_show_dynamic.*
+import kotlin.properties.Delegates
 
 class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListener,
     OnRemoveCommentListener, TextWatcher, View.OnClickListener {
@@ -33,6 +35,7 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
     private val adapter = ShowCommentAdapter(commentList)
     private val comment = DynamicComment()
     private lateinit var dynamic: Dynamic
+    private var dynamicId by Delegates.notNull<Int>()
     private lateinit var dynamicAdapter: ShowDynamicAdapter
     private val dynamicList = ArrayList<Dynamic>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,17 +54,16 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         dynamicViewModel.releaseCommentLiveData.observe(this, Observer {
             if (it.isSuccess()) {
                 dynamicViewModel.setDynamicId(comment.dynamicId)
-                dynamicViewModel.setSimpleDynamicId(dynamic.id)
+                dynamicViewModel.setSimpleDynamicId(dynamicId)
                 comment_et.setText("")
             }
         })
         dynamicViewModel.removeCommentLiveData.observe(this, Observer { result ->
             if (result.isSuccess()) {
-                dynamicViewModel.setDynamicId(dynamic.id)
-                dynamicViewModel.setSimpleDynamicId(dynamic.id)
+                dynamicViewModel.setDynamicId(dynamicId)
+                dynamicViewModel.setSimpleDynamicId(dynamicId)
             }
         })
-        dynamicViewModel.inflateGreatInfo(dynamic)
         dynamicViewModel.greatInfoLiveData.observe(this, Observer {
             if (it.isLike()) {
                 changeGreat.setBackgroundResource(R.drawable.red_great)
@@ -72,11 +74,12 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         dynamicViewModel.greatStatusLiveData.observe(this, Observer {
             if (it.isSuccess()) {
                 dynamicViewModel.inflateGreatInfo(dynamic)
-                dynamicViewModel.setSimpleDynamicId(dynamic.id)
+                dynamicViewModel.setSimpleDynamicId(dynamicId)
             }
         })
         dynamicViewModel.simpleDynamicLiveData.observe(this, Observer {
             dynamic = it
+            dynamicViewModel.inflateGreatInfo(dynamic)
             dynamicList.clear()
             dynamicList.add(dynamic)
             dynamicAdapter.notifyDataSetChanged()
@@ -84,8 +87,8 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
     }
 
     private fun initSome() {
-        dynamic = intent?.getSerializableExtra("dynamic") as Dynamic
-        dynamicList.add(dynamic)
+        dynamicId = intent.getIntExtra(AppClient.dynamicId,0)
+        dynamicViewModel.setSimpleDynamicId(dynamicId)
         dynamicAdapter = ShowDynamicAdapter(dynamicList, this)
         dynamicAdapter.urlClickListener = this
         adapter.idListener = this
@@ -94,8 +97,8 @@ class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListe
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         dynamic_details_list.adapter = groupAdapter
         dynamic_details_list.layoutManager = layoutManager
-        dynamicViewModel.setDynamicId(dynamic.id)
-        comment.dynamicId = dynamic.id
+        dynamicViewModel.setDynamicId(dynamicId)
+        comment.dynamicId = dynamicId
         //
         comment_et.addTextChangedListener(this)
         send_comment.isEnabled = false

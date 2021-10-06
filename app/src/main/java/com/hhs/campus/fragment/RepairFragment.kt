@@ -2,11 +2,6 @@ package com.hhs.campus.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,18 +16,12 @@ import com.hhs.campus.databinding.RepairLayoutBinding
 import com.hhs.campus.viewModel.AnnouncementViewModel
 import java.util.function.Consumer
 
-class RepairFragment:Fragment() ,Consumer<Int>{
-    private lateinit var binding :RepairLayoutBinding
+class RepairFragment: BaseViewFragment<RepairLayoutBinding>(),Consumer<Int>{
     private val announcementViewModel by lazy { ViewModelProvider(this).get(AnnouncementViewModel::class.java) }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         addOperate()
         addAnnouncementData()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.repair_layout,container,false)
-        return binding.root
     }
     private fun  addAnnouncementData(){
         announcementViewModel.requestSomeAnnouncement()
@@ -64,4 +53,6 @@ class RepairFragment:Fragment() ,Consumer<Int>{
             2->startActivity(Intent(context, ScanCodeActivity::class.java))
         }
     }
+
+    override fun getSubLayoutId() =R.layout.repair_layout
 }

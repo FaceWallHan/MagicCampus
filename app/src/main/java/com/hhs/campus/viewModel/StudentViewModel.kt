@@ -12,6 +12,7 @@ import com.hhs.campus.net.ServiceCreator
 import com.hhs.campus.utils.DetermineResponse
 import com.hhs.campus.utils.MagicResponse
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 
 class StudentViewModel:ViewModel() {
@@ -32,10 +33,8 @@ class StudentViewModel:ViewModel() {
     //获取本地学生信息
     val inquireLiveData=MutableLiveData<Student>()
     fun  refreshSelfInquire(){
-        ServiceCreator.startRequest(viewModelScope){
-            Repository.getSaveStudent().collect {
-                inquireLiveData.value=it
-            }
+        viewModelScope.launch {
+            Repository.getSaveStudent().collect { inquireLiveData.value=it }
         }
     }
     //发送头像

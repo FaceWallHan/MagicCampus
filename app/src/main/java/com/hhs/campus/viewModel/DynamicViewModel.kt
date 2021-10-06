@@ -31,9 +31,9 @@ class DynamicViewModel:ViewModel() {
     //获取全部动态
     val allDynamicLiveData=MutableLiveData<List<Dynamic>>()
     fun refreshAllDynamic(){
-    ServiceCreator.startRequest(viewModelScope){
-        Repository.getAllDynamic().collect { allDynamicLiveData.value=it.data }
-    }
+        ServiceCreator.startRequest(viewModelScope){
+            Repository.getAllDynamic().collect { allDynamicLiveData.value=it.data }
+        }
     }
     //自己发布的动态
     val myDynamicLiveData=MutableLiveData<List<Dynamic>>()

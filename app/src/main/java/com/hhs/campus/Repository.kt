@@ -3,10 +3,7 @@ package com.hhs.campus
 import com.hhs.campus.bean.*
 import com.hhs.campus.dao.StudentDao
 import com.hhs.campus.net.ServiceCreator
-import com.hhs.campus.net.work.AnnouncementService
-import com.hhs.campus.net.work.DynamicService
-import com.hhs.campus.net.work.RepairService
-import com.hhs.campus.net.work.StudentService
+import com.hhs.campus.net.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -19,6 +16,7 @@ object Repository {
     private val studentService=ServiceCreator.create<StudentService>()
     private val repairService=ServiceCreator.create<RepairService>()
     private val dynamicService=ServiceCreator.create<DynamicService>()
+    private val messageService=ServiceCreator.create<MessageService>()
     suspend fun  getSomeAnnouncement()= startFlow(announcementService.getSomeAnnouncement())
     suspend fun loginStudent(login: Login)= startFlow(studentService.login(login))
     fun saveStudent(student: Student)= startFlow(StudentDao.saveStudent(student))
@@ -44,5 +42,6 @@ object Repository {
     suspend fun getSimpleGreat(id: Int,dynamicId:Int)= startFlow(dynamicService.getSimpleGreat(id, dynamicId))
     suspend fun changeGreatStatus(id: Int,dynamicId:Int)= startFlow(dynamicService.changeGreatStatus(id, dynamicId))
     suspend fun querySimpleOneDynamic(dynamicId:Int)= startFlow(dynamicService.querySimpleOneDynamic( dynamicId))
+    suspend fun queryGreatAndCommentRecording(studentId:Int)= startFlow(messageService.queryGreatAndCommentRecording(studentId))
     //suspend-->表示所有传入的Lambda表达式中的代码也是拥有挂起函数上下文的。
 }

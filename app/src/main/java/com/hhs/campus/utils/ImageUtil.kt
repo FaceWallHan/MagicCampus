@@ -4,14 +4,17 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import com.hhs.campus.R
 import com.hhs.campus.bean.ImageShow
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.CoroutineScope
@@ -89,4 +92,10 @@ object ImageUtil {
         .setPositiveButton("确定", positiveListener)
         .setNegativeButton("取消", negativeListener)
         .show()
+    fun showNetAlertDialog(context: Context){
+        showAlertDialog(context,context.resources.getString(R.string.net_change),
+            DialogInterface.OnClickListener { _, _ ->
+                context.startActivity(Intent(Settings.ACTION_SETTINGS))
+            },null)
+    }
 }

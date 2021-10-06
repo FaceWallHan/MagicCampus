@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">魔幻校园</string>
+    <string name="app_name">智慧校园</string>
     <!-- Strings related to login -->
     <string name="welcome">欢迎登录</string>
     <string name="id">学号</string>
@@ -10,7 +10,7 @@
     <string name="submitFeedback">提交反馈</string>
     <string name="exit">退出登录</string>
     <string name="repair">报修</string>
-    <string name="eat">点餐</string>
+    <string name="message">消息</string>
     <string name="dynamic">动态</string>
     <string name="mine">我的</string>
     <string name="announcement">新闻公告</string>

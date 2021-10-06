@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.activity.MyDynamicActivity
 import com.hhs.campus.activity.ShowDynamicActivity
@@ -25,7 +26,7 @@ class ShowDynamicAdapter(private val list:List<Dynamic>, private val activity: A
         if (list.size>1||isMine){
             binding.root.setOnClickListener {
                 val intent=Intent(activity,ShowDynamicActivity::class.java)
-                intent.putExtra("dynamic",list[holder.adapterPosition])
+                intent.putExtra(AppClient.dynamicId,list[holder.adapterPosition].id)
                 activity.startActivity(intent)
                 if (activity is MyDynamicActivity){
                     activity.finish()

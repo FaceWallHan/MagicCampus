@@ -11,6 +11,7 @@ class AppClient:Application() {
         const val repair="repair"
         const val imageList="imageList"
         const val imageCount="imageCount"
+        const val dynamicId="dynamicId"
         const val chooseImage=1
         const val appraise=2
         const val dynamic=3

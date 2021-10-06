@@ -3,6 +3,7 @@ package com.hhs.campus.activity
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -102,12 +103,14 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
         }
         repairViewModel.sendRepairForm(repair)
         repairViewModel.repairFormLiveData.observe(this, androidx.lifecycle.Observer {
+            progressDialog.dismiss()
             if (it.isSuccess()) {
                 "发送成功".showToast()
+                startActivity(Intent(this,ShowRepairActivity::class.java))
+                finish()
             } else {
                 "发送失败".showToast()
             }
-            progressDialog.dismiss()
         })
         progressDialog.show()
     }

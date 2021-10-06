@@ -6,13 +6,13 @@
             android:id="@+id/repair"
             android:icon="@drawable/repair"/>
         <item
-            android:title="@string/eat"
-            android:id="@+id/eat"
-            android:icon="@drawable/eat"/>
-        <item
             android:title="@string/dynamic"
             android:id="@+id/dynamic"
             android:icon="@drawable/dynamic"/>
+        <item
+            android:title="@string/message"
+            android:id="@+id/message"
+            android:icon="@drawable/message"/>
         <item
             android:title="@string/mine"
             android:id="@+id/mine"

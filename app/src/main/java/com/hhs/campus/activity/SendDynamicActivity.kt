@@ -2,6 +2,7 @@ package com.hhs.campus.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -42,6 +43,7 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
     private val adapter = ShowImageAdapter(imageList, this)
     private val dynamic = Dynamic()
     private val request = 0
+    private val dialog by lazy { ProgressDialog(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_dynamic)
@@ -51,8 +53,9 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
             dynamic_head.load(it.avatar)
             dynamic_name.text = it.name
             dynamic.sId = it.id
-
         })
+        dialog.setMessage("loading...")
+        dialog.setCancelable(false)
         dynamic_content.addTextChangedListener(this)
         imageList.add(ImageShow("", true))
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -72,6 +75,7 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
             } else {
                 "发送失败".showToast()
             }
+            dialog.dismiss()
         })
     }
 
@@ -87,6 +91,7 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
                     //未选择
                     dynamicViewModel.uploadDynamic(dynamic)
                 }
+                dialog.show()
             }
             else -> finish()
         }
