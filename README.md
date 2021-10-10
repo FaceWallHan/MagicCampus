@@ -1,2 +1,2 @@
 # MagicCampus
-魔幻校园
+智慧校园
