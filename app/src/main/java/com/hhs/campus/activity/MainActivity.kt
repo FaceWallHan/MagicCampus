@@ -14,8 +14,10 @@ import com.hhs.campus.fragment.MessageFragment
 import com.hhs.campus.fragment.MineInfoFragment
 import com.hhs.campus.fragment.RepairFragment
 import com.hhs.campus.utils.NetChangeReceiver
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
     private val receiver by lazy { NetChangeReceiver() }
     private val  itemId= mutableListOf(R.id.repair,R.id.dynamic,R.id.message,R.id.mine)

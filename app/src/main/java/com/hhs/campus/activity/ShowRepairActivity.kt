@@ -15,11 +15,13 @@ import com.hhs.campus.adapter.RepairAdapter
 import com.hhs.campus.bean.Repair
 import com.hhs.campus.viewModel.RepairViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_show_repair.*
 
+@AndroidEntryPoint
 class ShowRepairActivity : AppCompatActivity() {
-    private val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var studentId:Int=0
     private val list=ArrayList<Repair>()
     private val adapter=RepairAdapter(list,this)

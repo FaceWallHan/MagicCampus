@@ -17,12 +17,14 @@ import com.hhs.campus.utils.MultiImageView
 import com.hhs.campus.utils.OnSelectImageItemListener
 import com.hhs.campus.viewModel.DynamicViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_my_dynamic.*
 
+@AndroidEntryPoint
 class MyDynamicActivity : AppCompatActivity(), OnSelectImageItemListener,
     MultiImageView.OnItemClickListener {
-    private val studentModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
-    private val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
+    val studentModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
     private val list = ArrayList<Dynamic>()
     private val adapter = ShowDynamicAdapter(list, this, true)
     private var isRemoveSuccess: Boolean = false

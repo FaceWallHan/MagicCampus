@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.hhs.campus.R
 import com.hhs.campus.databinding.RepairDetailsBinding
 import com.hhs.campus.viewModel.RepairViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RepairDetailsFragment :Fragment(){
     private lateinit var binding:RepairDetailsBinding
-    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.lifecycleOwner=this

@@ -26,10 +26,12 @@ import com.hhs.campus.dialog.SelectRepairDialog
 import com.hhs.campus.utils.*
 import com.hhs.campus.viewModel.RepairViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_want_repair.*
 import java.io.File
 import java.util.*
 
+@AndroidEntryPoint
 class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictureListener {
     private val imageDialog by lazy {
         val dialog = SelectImageDialog()
@@ -37,8 +39,8 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
         dialog
     }
     private val selectDialog by lazy { SelectRepairDialog() }
-    private val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val repairViewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var repair = Repair()
     private lateinit var progressDialog: ProgressDialog
     private val permission = 1

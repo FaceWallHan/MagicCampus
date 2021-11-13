@@ -23,13 +23,15 @@ import com.hhs.campus.utils.OnRemoveCommentListener
 import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.DynamicViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_show_dynamic.*
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class ShowDynamicActivity : AppCompatActivity(), MultiImageView.OnItemClickListener,
     OnRemoveCommentListener, TextWatcher, View.OnClickListener {
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
-    private val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
     private val dialog = ShowImageDialog()
     private val commentList = ArrayList<DynamicComment>()
     private val adapter = ShowCommentAdapter(commentList)

@@ -14,10 +14,12 @@ import com.hhs.campus.adapter.AnnouncementAdapter
 import com.hhs.campus.adapter.OperateAdapter
 import com.hhs.campus.databinding.RepairLayoutBinding
 import com.hhs.campus.viewModel.AnnouncementViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.function.Consumer
 
+@AndroidEntryPoint
 class RepairFragment: BaseViewFragment<RepairLayoutBinding>(),Consumer<Int>{
-    private val announcementViewModel by lazy { ViewModelProvider(this).get(AnnouncementViewModel::class.java) }
+    val announcementViewModel by lazy { ViewModelProvider(this).get(AnnouncementViewModel::class.java) }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         addOperate()

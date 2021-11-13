@@ -9,8 +9,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
+import javax.inject.Inject
 
-object Repository {
+//使用hilt注解来避免View层直接调用Repository的方法
+class RepositoryHilt @Inject constructor(){
     private fun <T> startFlow(param:T)= flow { emit(param) }.catch {}.flowOn(Dispatchers.IO)
     private val announcementService= ServiceCreator.create<AnnouncementService>()
     private val studentService=ServiceCreator.create<StudentService>()

@@ -20,11 +20,13 @@ import com.hhs.campus.bean.Dynamic
 import com.hhs.campus.dialog.ShowImageDialog
 import com.hhs.campus.utils.MultiImageView
 import com.hhs.campus.viewModel.DynamicViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dynamic_layout.*
 
+@AndroidEntryPoint
 class DynamicFragment : Fragment(), View.OnClickListener, MultiImageView.OnItemClickListener,
     SwipeRefreshLayout.OnRefreshListener {
-    private val dynamicViewModel by lazy { ViewModelProvider(requireActivity()).get(DynamicViewModel::class.java) }
+    val dynamicViewModel by lazy { ViewModelProvider(requireActivity()).get(DynamicViewModel::class.java) }
     private val list = ArrayList<Dynamic>()
     private lateinit var adapter: ShowDynamicAdapter
     private val dialog = ShowImageDialog()

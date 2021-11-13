@@ -12,10 +12,12 @@ import com.hhs.campus.bean.Repair
 import com.hhs.campus.fragment.RepairDetailsFragment
 import com.hhs.campus.fragment.RepairRecordFragment
 import com.hhs.campus.viewModel.RepairViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.my_repair.*
 
+@AndroidEntryPoint
 class MyRepairActivity : AppCompatActivity() {
-    private val viewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(this).get(RepairViewModel::class.java) }
     private val  itemId= mutableListOf(R.id.repair_details,R.id.repair_record)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

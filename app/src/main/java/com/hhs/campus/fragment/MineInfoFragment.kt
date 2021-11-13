@@ -22,11 +22,13 @@ import com.hhs.campus.utils.ImageUtil
 import com.hhs.campus.utils.OnAddPictureListener
 import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.function.Consumer
 
+@AndroidEntryPoint
 class MineInfoFragment:BaseViewFragment<MineInfoLayoutBinding>(), Consumer<Int>, OnAddPictureListener {
-    private val viewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private val imageDialog  by lazy {
         val dialog= SelectImageDialog()
         dialog.addPictureListener=this

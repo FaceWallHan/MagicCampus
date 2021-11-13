@@ -14,10 +14,11 @@ import com.hhs.campus.utils.OtherUtils
 import com.hhs.campus.viewModel.RepairViewModel
 import kotlinx.android.synthetic.main.select_repair_layout.*
 
+
 class SelectRepairDialog : DialogFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private val map = HashMap<String, ArrayList<String>>()
-    private val repairViewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
+    val repairViewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
     private val groupList = ArrayList<String>()
     private var isProject = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

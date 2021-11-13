@@ -15,11 +15,13 @@ import com.hhs.campus.utils.ImageUtil
 import com.hhs.campus.utils.OtherUtils
 import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_login.*
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private val dialog by lazy { ProgressDialog(this) }
-    private val viewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)

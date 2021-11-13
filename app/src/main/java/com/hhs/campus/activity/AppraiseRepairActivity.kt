@@ -17,10 +17,12 @@ import com.hhs.campus.databinding.ActivityAppraiseBinding
 import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.RepairViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AppraiseRepairActivity : AppCompatActivity() ,View.OnClickListener, RatingBar.OnRatingBarChangeListener {
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
-    private val repairViewModel by lazy {  ViewModelProvider(this).get(RepairViewModel::class.java)}
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val repairViewModel by lazy {  ViewModelProvider(this).get(RepairViewModel::class.java)}
     private var appraise=RepairAppraise()
     private lateinit var binding:ActivityAppraiseBinding
     override fun onCreate(savedInstanceState: Bundle?) {

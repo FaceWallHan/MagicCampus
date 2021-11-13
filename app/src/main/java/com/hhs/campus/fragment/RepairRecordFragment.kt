@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hhs.campus.R
 import com.hhs.campus.adapter.RepairRecordAdapter
 import com.hhs.campus.viewModel.RepairViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.repair_record.*
 
+@AndroidEntryPoint
 class RepairRecordFragment : Fragment() {
-    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(requireActivity()).get(RepairViewModel::class.java) }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.repairLiveData.observe(requireActivity(), Observer { result ->

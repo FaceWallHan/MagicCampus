@@ -31,13 +31,15 @@ import com.hhs.campus.utils.OtherUtils
 import com.hhs.campus.utils.showToast
 import com.hhs.campus.viewModel.DynamicViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_send_dynamic.*
 
+@AndroidEntryPoint
 class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemListener,
     Consumer<Int>,
     java.util.function.Consumer<Int> {
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
-    private val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
     private lateinit var submitItem: MenuItem
     private val imageList = ArrayList<ImageShow>()
     private val adapter = ShowImageAdapter(imageList, this)

@@ -11,11 +11,13 @@ import com.hhs.campus.bean.ComplexMessage
 import com.hhs.campus.databinding.MessageLayoutBinding
 import com.hhs.campus.viewModel.MessageViewModel
 import com.hhs.campus.viewModel.StudentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class MessageFragment:BaseViewFragment<MessageLayoutBinding>(), SwipeRefreshLayout.OnRefreshListener {
-    private val messageViewModel by lazy { ViewModelProvider(this).get(MessageViewModel::class.java) }
-    private val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
+    val messageViewModel by lazy { ViewModelProvider(this).get(MessageViewModel::class.java) }
+    val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private val list=ArrayList<ComplexMessage>()
     private val adapter=MessageAdapter(list)
     private var studentId by Delegates.notNull<Int>()
