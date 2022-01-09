@@ -1,5 +1,6 @@
 package com.hhs.campus.utils
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
@@ -8,6 +9,8 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
@@ -67,11 +70,25 @@ object OtherUtils {
         }
         return false
     }
-    fun judgePermissionsResult(grantResults: IntArray,successOperate: () -> Unit){
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    fun checkPermissionMap(result:Map<String,Boolean>,successOperate: () -> Unit){
+        var count=0
+        result.values.forEach {
+            if (it) count++
+        }
+        if (count==result.size){
             successOperate()
-        } else {
+        }else{
             "申请权限被拒绝".showToast()
+        }
+    }
+    private val permissionArray= arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+    fun  checkObtainPermission(requestLaunch:ActivityResultLauncher<Array<String>>?, obtain: () -> Unit){
+        if (ContextCompat.checkSelfPermission(AppClient.context, permissionArray[2]) == PackageManager.PERMISSION_GRANTED) {
+            obtain()
+        }else{
+            requestLaunch?.launch(permissionArray)
         }
     }
 }

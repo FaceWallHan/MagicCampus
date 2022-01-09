@@ -1,18 +1,15 @@
 package com.hhs.campus.activity
 
-import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.util.Consumer
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,8 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_send_dynamic.*
 
 @AndroidEntryPoint
-class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemListener,
-    Consumer<Int>,
+class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemListener, Consumer<Int>,
     java.util.function.Consumer<Int> {
     val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     val dynamicViewModel by lazy { ViewModelProvider(this).get(DynamicViewModel::class.java) }
@@ -44,8 +40,15 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
     private val imageList = ArrayList<ImageShow>()
     private val adapter = ShowImageAdapter(imageList, this)
     private val dynamic = Dynamic()
-    private val request = 0
     private val dialog by lazy { ProgressDialog(this) }
+    private val requestDataLaunch=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
+        if (result.resultCode== RESULT_OK){
+            result.data?.let { changeImageCount(it) }
+        }
+    }
+    private val requestPermission=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){result->
+        OtherUtils.checkPermissionMap(result){openPhotos()}
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_dynamic)
@@ -104,7 +107,7 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
         val intent = Intent(this, MultipleImageActivity::class.java)
         intent.putExtra(AppClient.imageCount, 9 - (imageList.size - 1))
         //限制选择图片数量为9
-        startActivityForResult(intent, AppClient.chooseImage)
+        requestDataLaunch.launch(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -124,34 +127,19 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
         p0?.isEmpty()?.let { changeSubmitItemStatus(!it) }
         dynamic.content = p0.toString()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppClient.chooseImage && resultCode == Activity.RESULT_OK) {
-            val extra = data?.getSerializableExtra(AppClient.imageList) as ArrayList<DynamicImage>
-            if (imageList.size == 1) {
-                imageList.remove(imageList[0])
-            } else {
-                imageList.remove(imageList[imageList.size - 1])
-            }
-            for (image in extra) {
-                imageList.add(ImageShow(image.path))
-            }
-            imageList.add(ImageShow("", true))
-            changeSubmitItemStatus(imageList.size != 1)
-            adapter.notifyDataSetChanged()
+    private fun changeImageCount(data: Intent){
+        val extra = data.getSerializableExtra(AppClient.imageList) as ArrayList<DynamicImage>
+        if (imageList.size == 1) {
+            imageList.remove(imageList[0])
+        } else {
+            imageList.remove(imageList[imageList.size - 1])
         }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            request -> OtherUtils.judgePermissionsResult(grantResults) { openPhotos() }
+        for (image in extra) {
+            imageList.add(ImageShow(image.path))
         }
+        imageList.add(ImageShow("", true))
+        changeSubmitItemStatus(imageList.size != 1)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onItemClicked(position: Int, status: Boolean) {
@@ -161,11 +149,7 @@ class SendDynamicActivity : AppCompatActivity(), TextWatcher, OnSelectImageItemL
     }
 
     override fun accept(p0: Int) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), request)
-        } else {
-            openPhotos()
-        }
+        OtherUtils.checkObtainPermission(requestPermission){openPhotos()}
     }
 
     private fun changeSubmitItemStatus(status: Boolean) {

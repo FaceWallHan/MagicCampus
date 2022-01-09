@@ -1,11 +1,9 @@
 package com.hhs.campus.utils
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -13,7 +11,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import com.hhs.campus.R
 import com.hhs.campus.bean.ImageShow
 import id.zelory.compressor.Compressor
@@ -53,7 +50,7 @@ object ImageUtil {
     }
 
     fun uploadMultipleImage(list: List<ImageShow>, context: Context, scope: CoroutineScope, block: (part: List<MultipartBody.Part>) -> Unit) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        OtherUtils.checkObtainPermission(null){
             val param = ArrayList<MultipartBody.Part>()
             scope.launch {
                 for (show in list) {
@@ -76,7 +73,7 @@ object ImageUtil {
         return MultipartBody.Part.createFormData("fileName", lastFile.name, body)
     }
     fun uploadLocalImage(file: File, context: Context, scope: CoroutineScope, block: (part: MultipartBody.Part) -> Unit) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        OtherUtils.checkObtainPermission(null){
             scope.launch {
                 val part = compressFile(file, context)
                 block(part)

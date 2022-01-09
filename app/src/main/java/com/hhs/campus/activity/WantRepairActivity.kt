@@ -1,19 +1,16 @@
 package com.hhs.campus.activity
 
-import android.Manifest
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -43,13 +40,15 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
     val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var repair = Repair()
     private lateinit var progressDialog: ProgressDialog
-    private val permission = 1
     private lateinit var binding: ActivityWantRepairBinding
+    private val requestPermission=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+        OtherUtils.checkPermissionMap(it){imageDialog.show(supportFragmentManager, "")}
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_want_repair)
-        setSupportActionBar(want_repair)
+        setSupportActionBar(binding.wantRepair)
         val serializableExtra = intent?.getSerializableExtra(AppClient.repair)
         serializableExtra?.let { repair = it as Repair }
         progressDialog = ProgressDialog(this)
@@ -72,12 +71,12 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
                 binding.repair = repair
             }
         })
-        submit_repair.setOnClickListener(this)
-        choose_project.setOnClickListener(this)
-        choose_area.setOnClickListener(this)
-        choose_reserve_date.setOnClickListener(this)
-        choose_reserve_time.setOnClickListener(this)
-        choose_repair_image.setOnClickListener(this)
+        binding.submitRepair.setOnClickListener(this)
+        binding.chooseProject.setOnClickListener(this)
+        binding.chooseArea.setOnClickListener(this)
+        binding.chooseReserveDate.setOnClickListener(this)
+        binding.chooseReserveTime.setOnClickListener(this)
+        binding.chooseRepairImage.setOnClickListener(this)
         repairViewModel.selectProjectLiveData.observe(this, androidx.lifecycle.Observer { result ->
             choose_project.setText(result)
         })
@@ -119,8 +118,7 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
 
     private fun chooseDate() {
         val calendar = Calendar.getInstance()
-        val dialog = DatePickerDialog(this,
-            DatePickerDialog.OnDateSetListener { _, p1, p2, p3 ->
+        val dialog = DatePickerDialog(this, { _, p1, p2, p3 ->
                 val date = if (p2 < 9) {
                     "$p1-0${p2 + 1}-$p3"
                 } else {
@@ -144,13 +142,7 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
         when (p0?.id) {
             R.id.choose_reserve_date -> chooseDate()
             R.id.choose_reserve_time -> chooseTime()
-            R.id.choose_repair_image -> {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    imageDialog.show(supportFragmentManager, "")
-                } else {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), permission)
-                }
-            }
+            R.id.choose_repair_image -> OtherUtils.checkObtainPermission(requestPermission){ imageDialog.show(supportFragmentManager, "") }
             R.id.choose_project -> {
                 selectDialog.show(supportFragmentManager, "")
                 repairViewModel.refreshSelfProject()
@@ -183,18 +175,4 @@ class WantRepairActivity : AppCompatActivity(), View.OnClickListener, OnAddPictu
             progressDialog.show()
         }
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            permission -> OtherUtils.judgePermissionsResult(grantResults) {
-                imageDialog.show(supportFragmentManager, "")
-            }
-        }
-    }
-
 }

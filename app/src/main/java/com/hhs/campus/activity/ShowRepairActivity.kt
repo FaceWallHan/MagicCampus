@@ -1,15 +1,14 @@
 package com.hhs.campus.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.adapter.RepairAdapter
 import com.hhs.campus.bean.Repair
@@ -24,7 +23,7 @@ class ShowRepairActivity : AppCompatActivity() {
     val studentViewModel by lazy { ViewModelProvider(this).get(StudentViewModel::class.java) }
     private var studentId:Int=0
     private val list=ArrayList<Repair>()
-    private val adapter=RepairAdapter(list,this)
+    private val adapter=RepairAdapter(list)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_repair)
@@ -46,6 +45,12 @@ class ShowRepairActivity : AppCompatActivity() {
     }
     private fun init(){
         val layoutManager= LinearLayoutManager(this)
+        adapter.requestLaunch=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode== Activity.RESULT_OK){
+                repairViewModel.getAllRepairList(studentId)
+                //评价成功，刷新数据
+            }
+        }
         show_repair.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         show_repair.layoutManager=layoutManager
         show_repair.adapter=adapter
@@ -53,13 +58,5 @@ class ShowRepairActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode== AppClient.appraise&&resultCode== Activity.RESULT_OK){
-            repairViewModel.getAllRepairList(studentId)
-            //评价成功，刷新数据
-        }
     }
 }

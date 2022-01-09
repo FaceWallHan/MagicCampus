@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.activity.MyDynamicActivity
 import com.hhs.campus.activity.SendDynamicActivity
@@ -30,6 +30,11 @@ class DynamicFragment : Fragment(), View.OnClickListener, MultiImageView.OnItemC
     private val list = ArrayList<Dynamic>()
     private lateinit var adapter: ShowDynamicAdapter
     private val dialog = ShowImageDialog()
+    private val requestLaunch=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK) {
+            dynamicViewModel.refreshAllDynamic()
+        }
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initSome()
@@ -63,19 +68,12 @@ class DynamicFragment : Fragment(), View.OnClickListener, MultiImageView.OnItemC
         when (p0?.id) {
             R.id.my_dynamic -> {
                 val intent = Intent(requireActivity(), MyDynamicActivity::class.java)
-                startActivityForResult(intent, AppClient.remove)
+                requestLaunch.launch(intent)
             }
             R.id.send_dynamic -> {
                 val intent = Intent(requireActivity(), SendDynamicActivity::class.java)
-                startActivityForResult(intent, AppClient.dynamic)
+                requestLaunch.launch(intent)
             }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            dynamicViewModel.refreshAllDynamic()
         }
     }
 

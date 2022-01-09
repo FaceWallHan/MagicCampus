@@ -4,17 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hhs.campus.AppClient
 import com.hhs.campus.R
 import com.hhs.campus.activity.AppraiseRepairActivity
 import com.hhs.campus.activity.MyRepairActivity
-import com.hhs.campus.activity.ShowRepairActivity
 import com.hhs.campus.bean.Repair
 import com.hhs.campus.databinding.ShowRepairItemBinding
 
-class RepairAdapter(private val list: List<Repair>, val activity: ShowRepairActivity) : RecyclerView.Adapter<RepairAdapter.ViewHolder>() {
+class RepairAdapter(private val list: List<Repair>) : RecyclerView.Adapter<RepairAdapter.ViewHolder>() {
+    lateinit var requestLaunch:ActivityResultLauncher<Intent>
     inner class ViewHolder(val binding: ShowRepairItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +31,7 @@ class RepairAdapter(private val list: List<Repair>, val activity: ShowRepairActi
             val item = list[viewHolder.layoutPosition]
             val intent = Intent(context, AppraiseRepairActivity::class.java)
             intent.putExtra(AppClient.repairId, item.id)
-            activity.startActivityForResult(intent, AppClient.appraise)
+            requestLaunch.launch(intent)
         }
         return viewHolder
     }
